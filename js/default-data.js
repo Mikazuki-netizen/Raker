@@ -1,0 +1,191 @@
+/**
+ * Data bawaan (Demo Mode) sebelum Google Spreadsheet dihubungkan.
+ * Strukturnya identik dengan templates/rundown_template.csv dan templates/peserta_template.csv.
+ */
+window.RAKER_DEFAULT_DATA = {
+  rundown: [
+    {
+      id: "1",
+      hari: "Day 1",
+      tanggal: "11 Jan 2026",
+      waktu: "06:00 - 06:30",
+      fase: "berangkat",
+      judul: "Titik Kumpul & Registrasi Keberangkatan",
+      lokasi: "Kantor Pusat / Stasiun Keberangkatan",
+      pic: "Tim Panitia",
+      dress_code: "Kemeja/Blus Putih & Celana Cream",
+      keterangan: "Presensi peserta, pembagian snack pagi, dan pengambilan ID Card sebelum berangkat.",
+      status: "Terjadwal"
+    },
+    {
+      id: "2",
+      hari: "Day 1",
+      tanggal: "11 Jan 2026",
+      waktu: "06:30 - 11:30",
+      fase: "berangkat",
+      judul: "Perjalanan Menuju Yogyakarta",
+      lokasi: "Rute Tol Trans-Jawa / Jalur Selatan",
+      pic: "Koordinator Transportasi",
+      dress_code: "Kemeja/Blus Putih & Celana Cream",
+      keterangan: "Perjalanan bersama rombongan menuju De Djokja Hotel Yogyakarta.",
+      status: "Terjadwal"
+    },
+    {
+      id: "3",
+      hari: "Day 1",
+      tanggal: "11 Jan 2026",
+      waktu: "11:30 - 13:00",
+      fase: "hotel",
+      judul: "Tiba di De Djokja Hotel & Check-in Kamar",
+      lokasi: "Lobby De Djokja Hotel",
+      pic: "Panitia Akomodasi",
+      dress_code: "Kemeja/Blus Putih & Celana Cream",
+      keterangan: "Pembagian kunci kamar sesuai daftar peserta dan makan siang bersama.",
+      status: "Terjadwal"
+    },
+    {
+      id: "4",
+      hari: "Day 1",
+      tanggal: "11 Jan 2026",
+      waktu: "13:30 - 15:30",
+      fase: "raker",
+      judul: "Pembukaan Raker & Keynote Transformasi Digital",
+      lokasi: "Ballroom Mataram Lt. 2",
+      pic: "Pimpinan & Keynote Speaker",
+      dress_code: "Kemeja/Blus Putih & Celana Cream",
+      keterangan: "Sambutan pembukaan serta pemaparan arah strategis 2026.",
+      status: "Terjadwal"
+    },
+    {
+      id: "5",
+      hari: "Day 1",
+      tanggal: "11 Jan 2026",
+      waktu: "15:30 - 17:30",
+      fase: "raker",
+      judul: "Sidang Pleno I: Evaluasi & Baseline Kinerja",
+      lokasi: "Ballroom Mataram Lt. 2",
+      pic: "Kepala Divisi",
+      dress_code: "Kemeja/Blus Putih & Celana Cream",
+      keterangan: "Paparan capaian tahun sebelumnya dan identifikasi ruang inovasi.",
+      status: "Terjadwal"
+    },
+    {
+      id: "6",
+      hari: "Day 1",
+      tanggal: "11 Jan 2026",
+      waktu: "19:00 - 21:00",
+      fase: "ishoma",
+      judul: "Makan Malam & Ramah Tamah",
+      lokasi: "Pendopo Restaurant De Djokja",
+      pic: "Panitia Acara",
+      dress_code: "Bebas Rapi",
+      keterangan: "Makan malam hangat dan sesi keakraban antar unit kerja.",
+      status: "Terjadwal"
+    },
+    {
+      id: "7",
+      hari: "Day 2",
+      tanggal: "12 Jan 2026",
+      waktu: "08:00 - 10:00",
+      fase: "raker",
+      judul: "Workshop Akselerasi Digital & AI Productivity",
+      lokasi: "Ballroom Mataram Lt. 2",
+      pic: "Tim Digital Transformation",
+      dress_code: "Seragam",
+      keterangan: "Implementasi alur kerja digital untuk produktivitas tim.",
+      status: "Terjadwal"
+    },
+    {
+      id: "8",
+      hari: "Day 2",
+      tanggal: "12 Jan 2026",
+      waktu: "10:15 - 12:30",
+      fase: "raker",
+      judul: "Sidang Komisi & Perumusan Roadmap 2026",
+      lokasi: "Ruang Kelas A / B / C",
+      pic: "Ketua Komisi",
+      dress_code: "Seragam",
+      keterangan: "Diskusi kelompok per divisi menyusun target dan KPI daya saing.",
+      status: "Terjadwal"
+    },
+    {
+      id: "9",
+      hari: "Day 2",
+      tanggal: "12 Jan 2026",
+      waktu: "13:30 - 16:30",
+      fase: "raker",
+      judul: "Presentasi Hasil Komisi & Pleno II",
+      lokasi: "Ballroom Mataram Lt. 2",
+      pic: "Seluruh Ketua Komisi",
+      dress_code: "Seragam",
+      keterangan: "Finalisasi program kerja prioritas dan sinkronisasi lintas divisi.",
+      status: "Terjadwal"
+    },
+    {
+      id: "10",
+      hari: "Day 2",
+      tanggal: "12 Jan 2026",
+      waktu: "19:00 - 21:30",
+      fase: "budaya",
+      judul: "Malam Apresiasi & Team Engagement",
+      lokasi: "Taman Pendopo De Djokja",
+      pic: "EO & Panitia",
+      dress_code: "Seragam / Casual Rapi",
+      keterangan: "Gala dinner dan penghargaan tim paling inovatif.",
+      status: "Terjadwal"
+    },
+    {
+      id: "11",
+      hari: "Day 3",
+      tanggal: "13 Jan 2026",
+      waktu: "08:00 - 10:00",
+      fase: "raker",
+      judul: "Penandatanganan Komitmen & Penutupan Raker",
+      lokasi: "Ballroom Mataram Lt. 2",
+      pic: "Pimpinan & Seluruh Peserta",
+      dress_code: "Co: Surjan/Beskap | Ce: Janggan/Kutu Baru",
+      keterangan: "Foto bersama busana adat Jogja dan penutupan resmi Raker 2026.",
+      status: "Terjadwal"
+    },
+    {
+      id: "12",
+      hari: "Day 3",
+      tanggal: "13 Jan 2026",
+      waktu: "10:00 - 11:30",
+      fase: "hotel",
+      judul: "Check-out Hotel & Persiapan Kepulangan",
+      lokasi: "Lobby De Djokja Hotel",
+      pic: "Panitia Akomodasi",
+      dress_code: "Co: Surjan/Beskap | Ce: Janggan/Kutu Baru",
+      keterangan: "Pengembalian kunci kamar dan pemuatan bagasi ke armada.",
+      status: "Terjadwal"
+    },
+    {
+      id: "13",
+      hari: "Day 3",
+      tanggal: "13 Jan 2026",
+      waktu: "11:30 - 17:00",
+      fase: "pulang",
+      judul: "Perjalanan Pulang Menuju Kota Asal",
+      lokasi: "De Djokja Hotel -> Titik Akhir",
+      pic: "Koordinator Transportasi",
+      dress_code: "Bebas Rapi / Adat",
+      keterangan: "Perjalanan kembali dengan selamat hingga tiba di titik kepulangan.",
+      status: "Terjadwal"
+    }
+  ],
+  peserta: [
+    { no: "1", nama: "Arif Wijaya", jabatan: "Direktur Operasional", divisi: "Manajemen", kelompok_transport: "Bus 1 / Eksekutif", no_kamar: "201", kontak: "0812-1001-2001", ukuran_seragam: "L", status: "Terkonfirmasi", catatan: "VIP Speaker" },
+    { no: "2", nama: "Siti Nurhaliza", jabatan: "Manajer Transformasi Digital", divisi: "Digital & IT", kelompok_transport: "Bus 1 / Eksekutif", no_kamar: "202", kontak: "0812-1001-2002", ukuran_seragam: "M", status: "Terkonfirmasi", catatan: "PIC Materi Digital" },
+    { no: "3", nama: "Budi Santoso", jabatan: "Lead Product Strategist", divisi: "Inovasi Produk", kelompok_transport: "Bus 1 / Eksekutif", no_kamar: "203", kontak: "0812-1001-2003", ukuran_seragam: "XL", status: "Terkonfirmasi", catatan: "Ketua Komisi A" },
+    { no: "4", nama: "Dewi Lestari", jabatan: "HR Business Partner", divisi: "SDM & Budaya", kelompok_transport: "Bus 1 / Eksekutif", no_kamar: "204", kontak: "0812-1001-2004", ukuran_seragam: "M", status: "Terkonfirmasi", catatan: "Koordinator Dress Code" },
+    { no: "5", nama: "Raka Pratama", jabatan: "Senior Data Engineer", divisi: "Digital & IT", kelompok_transport: "Bus 2 / Inovasi", no_kamar: "301", kontak: "0812-1001-2005", ukuran_seragam: "L", status: "Terkonfirmasi", catatan: "-" },
+    { no: "6", nama: "Nadia Kusuma", jabatan: "Finance & Planning Lead", divisi: "Keuangan", kelompok_transport: "Bus 2 / Inovasi", no_kamar: "302", kontak: "0812-1001-2006", ukuran_seragam: "S", status: "Terkonfirmasi", catatan: "Ketua Komisi B" },
+    { no: "7", nama: "Hendra Gunawan", jabatan: "Regional Operations Head", divisi: "Operasional", kelompok_transport: "Bus 2 / Inovasi", no_kamar: "303", kontak: "0812-1001-2007", ukuran_seragam: "XL", status: "Terkonfirmasi", catatan: "Alergi udang" },
+    { no: "8", nama: "Putri Ayu Maharani", jabatan: "Brand & Communications", divisi: "Pemasaran", kelompok_transport: "Bus 2 / Inovasi", no_kamar: "304", kontak: "0812-1001-2008", ukuran_seragam: "M", status: "Terkonfirmasi", catatan: "Tim Dokumentasi" },
+    { no: "9", nama: "Dimas Saputra", jabatan: "Automation Specialist", divisi: "Digital & IT", kelompok_transport: "Bus 3 / Produktivitas", no_kamar: "305", kontak: "0812-1001-2009", ukuran_seragam: "L", status: "Menunggu", catatan: "Konfirmasi jadwal kereta" },
+    { no: "10", nama: "Fitri Handayani", jabatan: "Customer Success Manager", divisi: "Layanan Pelanggan", kelompok_transport: "Bus 3 / Produktivitas", no_kamar: "306", kontak: "0812-1001-2010", ukuran_seragam: "M", status: "Terkonfirmasi", catatan: "-" },
+    { no: "11", nama: "Yoga Permana", jabatan: "Business Analyst", divisi: "Keuangan", kelompok_transport: "Bus 3 / Produktivitas", no_kamar: "307", kontak: "0812-1001-2011", ukuran_seragam: "L", status: "Terkonfirmasi", catatan: "Vegetarian" },
+    { no: "12", nama: "Larasati Wulandari", jabatan: "UI/UX & Research Lead", divisi: "Inovasi Produk", kelompok_transport: "Bus 3 / Produktivitas", no_kamar: "308", kontak: "0812-1001-2012", ukuran_seragam: "S", status: "Terkonfirmasi", catatan: "Notulen Pleno" }
+  ]
+};

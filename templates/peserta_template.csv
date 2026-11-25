@@ -1,0 +1,13 @@
+no,nama,jabatan,divisi,kelompok_transport,no_kamar,kontak,ukuran_seragam,status,catatan
+1,Arif Wijaya,Direktur Operasional,Manajemen,Bus 1 / Eksekutif,201,0812-1001-2001,L,Terkonfirmasi,VIP Speaker
+2,Siti Nurhaliza,Manajer Transformasi Digital,Digital & IT,Bus 1 / Eksekutif,202,0812-1001-2002,M,Terkonfirmasi,PIC Materi Digital
+3,Budi Santoso,Lead Product Strategist,Inovasi Produk,Bus 1 / Eksekutif,203,0812-1001-2003,XL,Terkonfirmasi,Ketua Komisi A
+4,Dewi Lestari,HR Business Partner,SDM & Budaya,Bus 1 / Eksekutif,204,0812-1001-2004,M,Terkonfirmasi,Koordinator Dress Code
+5,Raka Pratama,Senior Data Engineer,Digital & IT,Bus 2 / Inovasi,301,0812-1001-2005,L,Terkonfirmasi,-
+6,Nadia Kusuma,Finance & Planning Lead,Keuangan,Bus 2 / Inovasi,302,0812-1001-2006,S,Terkonfirmasi,Ketua Komisi B
+7,Hendra Gunawan,Regional Operations Head,Operasional,Bus 2 / Inovasi,303,0812-1001-2007,XL,Terkonfirmasi,Alergi udang
+8,Putri Ayu Maharani,Brand & Communications,Pemasaran,Bus 2 / Inovasi,304,0812-1001-2008,M,Terkonfirmasi,Tim Dokumentasi
+9,Dimas Saputra,Automation Specialist,Digital & IT,Bus 3 / Produktivitas,305,0812-1001-2009,L,Menunggu,Konfirmasi jadwal kereta
+10,Fitri Handayani,Customer Success Manager,Layanan Pelanggan,Bus 3 / Produktivitas,306,0812-1001-2010,M,Terkonfirmasi,-
+11,Yoga Permana,Business Analyst,Keuangan,Bus 3 / Produktivitas,307,0812-1001-2011,L,Terkonfirmasi,Vegetarian
+12,Larasati Wulandari,UI/UX & Research Lead,Inovasi Produk,Bus 3 / Produktivitas,308,0812-1001-2012,S,Terkonfirmasi,Notulen Pleno
