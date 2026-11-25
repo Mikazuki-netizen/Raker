@@ -1,5 +1,5 @@
 /* ==========================================================================
-   RAKER 2026 — DE DJOKJA HOTEL
+   RAKER 2027 — DE DJOKJA HOTEL
    Design System + Motion Architecture (per SKILL web design.md)
    ========================================================================== */
 
@@ -29,7 +29,9 @@
   --accent-gold-bright: #b58a53;
   --accent-gold-soft: #efe2c8;
 
-  --accent-crimson: #991b1b;
+  --accent-crimson: #c82027;
+  --siba-red: #c82027;
+  --deep-siba-red: #8f1720;
   --accent-crimson-soft: #fef2f2;
 
   --border-subtle: rgba(75, 40, 24, 0.16);
@@ -53,6 +55,8 @@
   /* Typography */
   --font-sans: "Source Sans 3", "Lora", Georgia, serif;
   --font-serif: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --font-display: "Cinzel", "Cormorant Garamond", Georgia, serif;
+  --font-slab: "Roboto Slab", "Oswald", Georgia, serif;
   --font-mono: "Lora", Georgia, serif;
 
   /* Motion Tokens (SKILL web design.md — Emil Kowalski) */
@@ -675,7 +679,7 @@ main,
   }
 
   25% {
-    transform: rotate(-10deg) translateY(-3px);
+    transform: rotate(-8deg) translateY(-3px);
   }
 
   50% {
@@ -683,7 +687,7 @@ main,
   }
 
   75% {
-    transform: rotate(10deg) translateY(-3px);
+    transform: rotate(8deg) translateY(-3px);
   }
 
   100% {
@@ -694,10 +698,10 @@ main,
 .gunungan-ornament {
   position: fixed;
   bottom: -6vw;
-  width: 35vw;
+  width: 32vw;
   z-index: 2;
   pointer-events: none;
-  opacity: 0.9;
+  opacity: 0.88;
   transform-origin: 50% 95%;
   /* Bottom wooden handle pivot */
   will-change: transform;
@@ -711,27 +715,34 @@ main,
 
 .gunungan-left {
   left: -10vw;
-  animation: gununganDalang 5s ease-in-out infinite;
+  animation: gununganDalang 5s ease-in-out 0s infinite;
 }
 
 .gunungan-right {
   right: -10vw;
-  animation: gununganDalang 5.4s ease-in-out -1.6s infinite;
+  animation: gununganDalang 5s ease-in-out -2.5s infinite;
+}
+
+@media (max-width: 1024px) {
+  .gunungan-ornament {
+    width: 26vw;
+    opacity: 0.72;
+  }
 }
 
 @media (max-width: 640px) {
   .gunungan-ornament {
-    width: 35vw;
-    bottom: -5vw;
-    opacity: 0.65;
+    width: 22vw;
+    bottom: -4vw;
+    opacity: 0.28;
   }
 
   .gunungan-left {
-    left: -9vw;
+    left: -8vw;
   }
 
   .gunungan-right {
-    right: -9vw;
+    right: -8vw;
   }
 }
 
@@ -1574,7 +1585,7 @@ main,
 
 .fieldmap-workspace {
   display: grid;
-  grid-template-columns: 1.45fr 0.95fr;
+  grid-template-columns: 1.85fr 1fr;
   gap: 20px;
   align-items: stretch;
 }
@@ -1706,18 +1717,31 @@ main,
 
 .route-base-path {
   fill: none;
-  stroke: rgba(20, 25, 31, 0.22);
-  stroke-width: 3;
-  stroke-dasharray: 7 6;
+  stroke: rgba(84, 43, 24, 0.22);
+  stroke-width: 4;
+  stroke-dasharray: 8 6;
+  stroke-linecap: round;
+}
+
+.route-unconfirmed-path {
+  fill: none;
+  stroke: rgba(181, 138, 83, 0.72);
+  stroke-width: 2.5;
+  stroke-dasharray: 5 5;
   stroke-linecap: round;
 }
 
 .route-active-path {
   fill: none;
-  stroke: var(--accent-teal);
-  stroke-width: 3.5;
+  stroke: var(--siba-red, #C82027);
+  stroke-width: 4;
   stroke-linecap: round;
   transition: opacity var(--dur-ui) var(--ease-out-cubic);
+}
+
+.map-vehicle-bus {
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(48, 32, 23, 0.35));
 }
 
 /* Active Pin Halo — moves on screen with ease-in-out */
@@ -1728,13 +1752,13 @@ main,
 }
 
 .halo-ring-outer {
-  fill: rgba(15, 118, 110, 0.12);
-  stroke: rgba(15, 118, 110, 0.45);
-  stroke-width: 1.5;
+  fill: rgba(200, 32, 39, 0.12);
+  stroke: rgba(200, 32, 39, 0.48);
+  stroke-width: 1.6;
 }
 
 .halo-ring-inner {
-  fill: rgba(15, 118, 110, 0.18);
+  fill: rgba(200, 32, 39, 0.18);
 }
 
 /* Map Waypoint Pin */
@@ -3355,5 +3379,1128 @@ main,
   .footer-trucks {
     margin-top: 14px;
     padding-top: 12px;
+  }
+}
+
+
+/* ==========================================================================
+   SECTION 01: THE OPENING CURTAIN
+   ========================================================================== */
+.opening-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+  overflow: hidden;
+  transition: opacity 420ms var(--ease-out-cubic);
+}
+
+.opening-curtain.is-opening {
+  pointer-events: none;
+}
+
+.opening-curtain.is-opening .curtain-left {
+  transform: translateX(-102%);
+}
+
+.opening-curtain.is-opening .curtain-right {
+  transform: translateX(102%);
+}
+
+.opening-curtain.is-opening .curtain-centerpiece {
+  opacity: 0;
+  transform: scale(1.04);
+}
+
+.opening-curtain.is-done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.curtain-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.5%;
+  background: var(--bg-page);
+  background-image: radial-gradient(circle at center, rgba(181, 138, 83, 0.12) 0%, transparent 70%);
+  transition: transform 820ms cubic-bezier(0.77, 0, 0.175, 1);
+  will-change: transform;
+}
+
+.curtain-left {
+  left: 0;
+  border-right: 2px solid rgba(181, 138, 83, 0.45);
+}
+
+.curtain-right {
+  right: 0;
+  border-left: 2px solid rgba(181, 138, 83, 0.45);
+}
+
+.curtain-batik-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 14px;
+  background: repeating-linear-gradient(to bottom,
+      rgba(84, 43, 24, 0.14) 0px,
+      rgba(84, 43, 24, 0.14) 6px,
+      transparent 6px,
+      transparent 14px);
+}
+
+.curtain-left .curtain-batik-edge {
+  right: 6px;
+}
+
+.curtain-right .curtain-batik-edge {
+  left: 6px;
+}
+
+.curtain-centerpiece {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px;
+  transition: opacity 420ms var(--ease-out-cubic), transform 520ms var(--ease-out-cubic);
+}
+
+.curtain-gunungan {
+  width: 96px;
+  height: auto;
+  margin-bottom: 12px;
+  opacity: 0.92;
+  animation: curtainGunungan 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes curtainGunungan {
+  from {
+    transform: rotate(-3deg) scale(0.98);
+  }
+
+  to {
+    transform: rotate(3deg) scale(1.02);
+  }
+}
+
+.curtain-logo {
+  height: 44px;
+  width: auto;
+  margin-bottom: 12px;
+}
+
+.curtain-kicker {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--ink-primary);
+}
+
+.curtain-sub {
+  margin-top: 4px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.96rem;
+  color: var(--siba-red);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opening-curtain {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   HERITAGE NAVIGATION BORDER & SIBA RED ACCENTS
+   ========================================================================== */
+.header-heritage-border {
+  height: 3px;
+  width: 100%;
+  background: repeating-linear-gradient(90deg,
+      var(--siba-red) 0 18px,
+      var(--accent-gold-bright) 18px 26px,
+      var(--ink-secondary) 26px 44px,
+      transparent 44px 48px);
+  opacity: 0.55;
+}
+
+.nav-link.is-active {
+  color: var(--siba-red);
+  font-weight: 700;
+}
+
+.site-header.is-scrolled .nav-link.is-active {
+  background: var(--siba-red);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   SECTION 02: HANGING MEMORY GALLERY (RAKER MEMORIES)
+   ========================================================================== */
+.memories-strip {
+  position: relative;
+  z-index: 8;
+  padding: 14px 0 18px;
+  background: linear-gradient(to bottom, rgba(233, 215, 183, 0.55), rgba(243, 229, 200, 0.25));
+  border-bottom: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.memories-header-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.memories-kicker {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--siba-red);
+}
+
+.memories-title {
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--ink-secondary);
+}
+
+.clothesline-stage {
+  position: relative;
+  width: 100%;
+  padding-top: 10px;
+}
+
+.clothesline-rope {
+  position: absolute;
+  top: 16px;
+  left: -2%;
+  right: -2%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(84, 43, 24, 0.2), rgba(84, 43, 24, 0.55), rgba(84, 43, 24, 0.2));
+  box-shadow: 0 1px 2px rgba(48, 32, 23, 0.14);
+  pointer-events: none;
+}
+
+.memories-track {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 24px;
+  padding: 6px 24px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+  cursor: grab;
+}
+
+.memories-track::-webkit-scrollbar {
+  display: none;
+}
+
+.memory-polaroid {
+  position: relative;
+  flex: 0 0 148px;
+  background: #fbf7ee;
+  padding: 8px 8px 12px;
+  border-radius: 3px;
+  box-shadow: 0 6px 14px rgba(48, 32, 23, 0.14), 0 0 0 1px rgba(75, 40, 24, 0.14);
+  transform-origin: 50% 0%;
+  animation: memoryWindSway var(--sway-dur, 5.2s) ease-in-out var(--sway-delay, 0s) infinite;
+  cursor: pointer;
+  scroll-snap-align: center;
+  text-align: left;
+  border: none;
+  transition: box-shadow 200ms ease, filter 200ms ease;
+}
+
+.memory-polaroid:hover {
+  box-shadow: 0 12px 24px rgba(48, 32, 23, 0.2), 0 0 0 1px rgba(200, 32, 39, 0.35);
+}
+
+.memory-clip {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 20px;
+  border-radius: 3px;
+  background: linear-gradient(to right, #9c6b3b, #c5915a, #8d5f32);
+  box-shadow: 0 2px 4px rgba(48, 32, 23, 0.28);
+  z-index: 2;
+}
+
+.memory-clip::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 2px;
+  right: 2px;
+  height: 2px;
+  background: rgba(48, 32, 23, 0.35);
+}
+
+@keyframes memoryWindSway {
+
+  0%,
+  100% {
+    transform: rotate(-1.8deg);
+  }
+
+  50% {
+    transform: rotate(1.8deg);
+  }
+}
+
+.memory-photo-box {
+  width: 100%;
+  height: 92px;
+  background: #ebe0ca;
+  border: 1px dashed rgba(75, 40, 24, 0.22);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: var(--ink-muted);
+}
+
+.memory-photo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.memory-placeholder-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  opacity: 0.72;
+}
+
+.memory-caption-bar {
+  margin-top: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.memory-year-tag {
+  font-family: var(--font-slab);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--siba-red);
+}
+
+.memory-loc-tag {
+  font-size: 0.66rem;
+  color: var(--ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+  .memories-track {
+    justify-content: flex-start;
+    gap: 14px;
+    padding: 6px 16px 10px;
+  }
+
+  .memory-polaroid {
+    flex: 0 0 132px;
+  }
+
+  .memory-photo-box {
+    height: 82px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .memory-polaroid {
+    animation: none;
+  }
+}
+
+/* Memory Lightbox Modal */
+.memory-lightbox-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.memory-lightbox-frame {
+  background: var(--bg-page);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  min-height: 260px;
+  max-height: 420px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.memory-lightbox-frame img {
+  width: 100%;
+  max-height: 420px;
+  object-fit: contain;
+  display: block;
+}
+
+.memory-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 28px;
+  color: var(--ink-muted);
+}
+
+.memory-empty-state strong {
+  color: var(--ink-primary);
+  font-size: 0.96rem;
+}
+
+.memory-empty-state span {
+  font-size: 0.84rem;
+  max-width: 42ch;
+}
+
+.memory-lightbox-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.ml-meta-year {
+  display: inline-block;
+  font-family: var(--font-slab);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--siba-red);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ml-meta-caption {
+  font-size: 0.9rem;
+  color: var(--ink-secondary);
+  margin-top: 2px;
+}
+
+.ml-nav-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ml-counter {
+  font-family: var(--font-slab);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+/* ==========================================================================
+   SECTION 04: HERITAGE LOOKBOOK ENHANCEMENTS
+   ========================================================================== */
+.dresscode-card {
+  position: relative;
+  border-top: 3px solid var(--border-strong);
+  transition: transform 240ms var(--ease-out-cubic), box-shadow 220ms var(--ease-out-cubic), border-color 200ms ease;
+}
+
+.dresscode-card[data-preview-day="1"]:hover {
+  border-top-color: var(--accent-gold-bright);
+}
+
+.dresscode-card[data-preview-day="2"]:hover {
+  border-top-color: var(--siba-red);
+}
+
+.dresscode-card[data-preview-day="3"]:hover {
+  border-top-color: var(--ink-secondary);
+}
+
+.dresscode-card .dc-thumb-strip {
+  position: relative;
+  box-shadow: 0 4px 12px rgba(48, 32, 23, 0.1);
+  border: 3px solid #fbf5e8;
+}
+
+.dresscode-card .dc-thumb-strip img {
+  transition: transform 380ms var(--ease-out-cubic);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dresscode-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-border-hover);
+  }
+
+  .dresscode-card:hover .dc-thumb-strip img {
+    transform: scale(1.04);
+  }
+}
+
+/* ==========================================================================
+   SECTION 05: BEYOND TRANSPORTATION (8-BIT TRUCK PARALLAX JOURNEY)
+   ========================================================================== */
+.story-truck-section {
+  position: relative;
+  padding: 24px 0 28px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(243, 229, 200, 0.28) 0%, rgba(233, 215, 183, 0.85) 100%);
+  border-top: none;
+}
+
+.story-header-center {
+  text-align: center;
+  max-width: 68ch;
+  margin: 0 auto 6px;
+}
+
+.story-kicker {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--siba-red);
+  margin-bottom: 6px;
+}
+
+.story-headline {
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 3vw, 2.35rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.12;
+  color: var(--ink-primary);
+}
+
+.story-lead {
+  margin-top: 10px;
+  font-size: 0.96rem;
+  color: var(--ink-secondary);
+}
+
+.story-milestones.is-centered {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.story-milestone-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-primary);
+}
+
+.story-milestone-pill .sm-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--siba-red);
+}
+
+.story-milestone-pill.is-jogja .sm-dot {
+  background: var(--accent-gold-bright);
+}
+
+.story-milestone-arrow {
+  color: var(--siba-red);
+  font-weight: 700;
+}
+
+/* 8-Bit Parallax Driving Stage */
+.pixel-journey-stage {
+  position: relative;
+  width: 100%;
+  height: 196px;
+  overflow: hidden;
+  border-top: none;
+  border-bottom: none;
+  background: linear-gradient(180deg, rgba(243, 229, 200, 0) 0%, rgba(226, 204, 165, 0.55) 78%, #3a2a22 78%);
+}
+
+.px-layer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.px-track {
+  display: flex;
+  width: 200%;
+  height: 100%;
+  will-change: transform;
+}
+
+.px-track svg {
+  display: block;
+  width: 50%;
+  height: 100%;
+  flex-shrink: 0;
+  shape-rendering: crispEdges;
+}
+
+/* Layer 1: Clouds (Slowest) */
+.px-clouds {
+  top: 2px;
+  height: 52px;
+}
+
+.px-clouds-track {
+  animation: pxScrollLoop 34s linear infinite;
+}
+
+/* Layer 2: Mountains (Slow Parallax) */
+.px-mountains {
+  bottom: 42px;
+  height: 112px;
+}
+
+.px-mountains-track {
+  animation: pxScrollLoop 22s linear infinite;
+}
+
+/* Layer 3: Tree Silhouettes (Medium Parallax) */
+.px-trees {
+  bottom: 42px;
+  height: 78px;
+}
+
+.px-trees-track {
+  animation: pxScrollLoop 10s linear infinite;
+}
+
+@keyframes pxScrollLoop {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Layer 4: Centered 8-Bit SIBA SURYA Truck */
+.px-truck-anchor {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  width: min(420px, 84vw);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.px-truck-rig {
+  position: relative;
+  width: 100%;
+  animation: pxTruckBounce 0.34s steps(2, end) infinite;
+}
+
+@keyframes pxTruckBounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.px-truck-sprite {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(0 5px 0 rgba(48, 32, 23, 0.22));
+}
+
+/* Spinning 8-Bit Wheel Overlays */
+.px-wheel {
+  position: absolute;
+  width: 5.2%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.px-wheel-rim {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2.5px dashed rgba(235, 240, 244, 0.92);
+  box-shadow: inset 0 0 0 1.5px rgba(34, 34, 34, 0.65);
+  transform-origin: center center;
+  animation: pxWheelSpin 0.42s linear infinite;
+}
+
+@keyframes pxWheelSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 8-Bit Exhaust Smoke Emitter */
+.px-smoke-emitter {
+  position: absolute;
+  left: 72.8%;
+  top: 0%;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+}
+
+.px-smoke {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: rgba(110, 96, 88, 0.72);
+  box-shadow: 4px -4px 0 rgba(145, 130, 120, 0.55);
+  opacity: 0;
+  animation: pxSmokePuff 1.3s steps(6, end) infinite;
+}
+
+.px-smoke.s2 {
+  animation-delay: 0.32s;
+  width: 12px;
+  height: 12px;
+}
+
+.px-smoke.s3 {
+  animation-delay: 0.65s;
+}
+
+.px-smoke.s4 {
+  animation-delay: 0.98s;
+  width: 11px;
+  height: 11px;
+}
+
+@keyframes pxSmokePuff {
+  0% {
+    transform: translate(0, 0) scale(0.7);
+    opacity: 0.85;
+  }
+
+  60% {
+    transform: translate(-38px, -24px) scale(1.3);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: translate(-74px, -42px) scale(1.7);
+    opacity: 0;
+  }
+}
+
+/* 8-Bit Tire Dust Clouds */
+.px-dust-emitter {
+  position: absolute;
+  bottom: 2%;
+  width: 20px;
+  height: 14px;
+  pointer-events: none;
+}
+
+.px-dust-emitter.is-rear {
+  left: 8%;
+}
+
+.px-dust-emitter.is-drive {
+  left: 51%;
+}
+
+.px-dust {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: rgba(181, 138, 83, 0.78);
+  box-shadow: 5px 2px 0 rgba(217, 189, 140, 0.75);
+  opacity: 0;
+  animation: pxDustKick 0.7s steps(5, end) infinite;
+}
+
+.px-dust.d2 {
+  animation-delay: 0.22s;
+  width: 9px;
+  height: 7px;
+}
+
+.px-dust.d3 {
+  animation-delay: 0.44s;
+}
+
+@keyframes pxDustKick {
+  0% {
+    transform: translate(0, 0) scale(0.8);
+    opacity: 0.85;
+  }
+
+  100% {
+    transform: translate(-42px, -12px) scale(1.4);
+    opacity: 0;
+  }
+}
+
+/* Layer 5: Looping 8-Bit Road (Fastest) */
+.px-road {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42px;
+  background: #3a2a22;
+  z-index: 3;
+}
+
+.px-road-curb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 5px;
+  background: repeating-linear-gradient(90deg,
+      #89502e 0 24px,
+      #b58a53 24px 48px);
+  animation: pxRoadScroll 1.1s linear infinite;
+}
+
+.px-road-dashes {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  width: 200%;
+  height: 4px;
+  background: repeating-linear-gradient(90deg,
+      #f3e5c8 0 28px,
+      transparent 28px 60px);
+  animation: pxRoadScroll 0.85s linear infinite;
+}
+
+@keyframes pxRoadScroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 768px) {
+  .story-truck-section {
+    padding: 20px 0 24px;
+  }
+
+  .pixel-journey-stage {
+    height: 158px;
+  }
+
+  .px-truck-anchor {
+    width: min(320px, 88vw);
+    bottom: 24px;
+  }
+
+  .px-road {
+    height: 36px;
+  }
+
+  .px-road-dashes {
+    top: 17px;
+  }
+
+  .px-mountains,
+  .px-trees {
+    bottom: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .px-clouds-track,
+  .px-mountains-track,
+  .px-trees-track,
+  .px-truck-rig,
+  .px-wheel-rim,
+  .px-smoke,
+  .px-dust,
+  .px-road-curb,
+  .px-road-dashes {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   SECTION 07 & 08: STICKY EXPEDITION MAP & GUESTBOOK POLISH
+   ========================================================================== */
+@media (min-width: 1025px) {
+  .fieldmap-workspace>.fieldmap-panel:first-child {
+    position: sticky;
+    top: 82px;
+  }
+}
+
+.fieldmap-viewport {
+  border: 2px solid rgba(137, 80, 46, 0.25);
+  box-shadow: inset 0 0 24px rgba(181, 138, 83, 0.14);
+}
+
+.table-card {
+  border-top: 3px solid var(--siba-red);
+}
+
+/* ==========================================================================
+   SECTION 09: FOOTER PANORAMA & HEADLINE
+   ========================================================================== */
+.site-footer {
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-doodle-panorama {
+  position: absolute;
+  inset: 0;
+  background-image: url("../assets/bg-doodle-jogja.jpg");
+  background-repeat: repeat-x;
+  background-size: 520px auto;
+  opacity: 0.06;
+  pointer-events: none;
+  animation: doodleDrift 55s linear infinite;
+}
+
+.footer-kicker {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #fca5a5;
+  margin-bottom: 4px;
+}
+
+/* ==========================================================================
+   MOTION SYSTEM: SCROLL REVEALS & PARALLAX
+   ========================================================================== */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 500ms var(--ease-out-cubic), transform 650ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .story-clouds svg,
+  .footer-doodle-panorama {
+    animation: none;
+  }
+}
+
+
+/* ==========================================================================
+   LOCATION DETAIL PANEL (Cinematic Expedition Map Overlay)
+   ========================================================================== */
+.fieldmap-viewport {
+  position: relative;
+}
+
+.location-detail-panel {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  width: min(350px, calc(100% - 28px));
+  max-height: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(251, 245, 232, 0.96);
+  border: 1.5px solid rgba(84, 43, 24, 0.28);
+  box-shadow: 0 14px 32px rgba(48, 32, 23, 0.22);
+  z-index: 15;
+}
+
+.location-detail-panel[hidden] {
+  display: none;
+}
+
+.ldp-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ldp-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.ldp-type-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--siba-red);
+  color: #ffffff;
+}
+
+.ldp-status-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #f59e0b;
+}
+
+.ldp-title {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+.ldp-close {
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
+  flex-shrink: 0;
+}
+
+.ldp-day-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.ldp-day-btn {
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-page);
+  color: var(--ink-secondary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.ldp-day-btn.is-active {
+  background: var(--ink-primary);
+  color: #f3e5c8;
+  border-color: var(--ink-primary);
+}
+
+.ldp-activity-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ldp-act-btn {
+  width: 100%;
+  text-align: left;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  background: #ffffff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: border-color 140ms ease, background-color 140ms ease;
+}
+
+.ldp-act-btn.is-active {
+  border-color: var(--siba-red);
+  background: #fef2f2;
+}
+
+.ldp-act-meta {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.ldp-act-btn strong {
+  font-size: 0.8rem;
+  color: var(--ink-primary);
+  line-height: 1.25;
+}
+
+@media (max-width: 768px) {
+  .location-detail-panel {
+    position: static;
+    width: 100%;
+    max-height: 260px;
+    margin-top: 10px;
+    box-shadow: var(--shadow-sm);
   }
 }

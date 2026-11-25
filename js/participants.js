@@ -294,7 +294,7 @@ window.RakerParticipants = (function () {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "daftar-peserta-raker-2026.csv";
+    a.download = "daftar-peserta-raker-2027.csv";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

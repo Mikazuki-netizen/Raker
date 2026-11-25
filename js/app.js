@@ -1,5 +1,5 @@
 /**
- * Main Application Orchestrator — Raker 2026
+ * Main Application Orchestrator — Raker 2027
  */
 (function () {
   const MODAL_CLOSE_MS = 190;
@@ -31,8 +31,11 @@
     window.RakerFieldMap.init(window.RAKER_DEFAULT_DATA.rundown);
     window.RakerParticipants.init(window.RAKER_DEFAULT_DATA.peserta, openParticipantModal);
 
+    setupOpeningCurtain();
+    setupMemoriesGallery();
     bindGlobalInteractions();
     populateSheetFormFromSettings();
+    setupScrollMotion();
     await syncSpreadsheetData(false);
   }
 
@@ -468,6 +471,148 @@
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
+  }
+
+  function setupOpeningCurtain() {
+    const curtain = document.getElementById("opening-curtain");
+    if (!curtain) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      curtain.classList.add("is-done");
+      return;
+    }
+    let dismissed = false;
+    const dismiss = () => {
+      if (dismissed) return;
+      dismissed = true;
+      curtain.classList.add("is-opening");
+      setTimeout(() => {
+        curtain.classList.add("is-done");
+      }, 900);
+    };
+    curtain.addEventListener("click", dismiss, { once: true });
+    setTimeout(dismiss, 1250);
+  }
+
+  let activeMemoryIdx = 0;
+
+  function setupMemoriesGallery() {
+    const track = document.getElementById("memories-track");
+    const memories = (window.RAKER_CONFIG && window.RAKER_CONFIG.event && window.RAKER_CONFIG.event.memories) || [];
+    if (!track || !memories.length) return;
+
+    track.innerHTML = memories
+      .map((item, idx) => {
+        const dur = (4.6 + (idx % 3) * 0.8).toFixed(1) + "s";
+        const delay = (-1.1 * idx).toFixed(1) + "s";
+        const mediaHtml = item.image
+          ? '<img src="' + escapeHtml(item.image) + '" alt="' + escapeHtml(item.caption || item.location) + '" loading="lazy" />'
+          : '<div class="memory-placeholder-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Slot Foto</span></div>';
+
+        return (
+          '<button type="button" class="memory-polaroid" role="listitem" data-memory-idx="' + idx + '" ' +
+          'style="--sway-dur:' + dur + ';--sway-delay:' + delay + ';" aria-label="Lihat ' + escapeHtml(item.location || "Memori Raker") + '">' +
+          '<span class="memory-clip" aria-hidden="true"></span>' +
+          '<div class="memory-photo-box">' + mediaHtml + '</div>' +
+          '<div class="memory-caption-bar">' +
+          '<span class="memory-year-tag">' + escapeHtml(item.year || "Arsip") + '</span>' +
+          '<span class="memory-loc-tag">' + escapeHtml(item.location || "") + '</span>' +
+          '</div>' +
+          '</button>'
+        );
+      })
+      .join("");
+
+    track.addEventListener("click", (e) => {
+      const card = e.target.closest("[data-memory-idx]");
+      if (!card) return;
+      openMemoryLightbox(Number(card.getAttribute("data-memory-idx")) || 0);
+    });
+
+    // Horizontal drag-to-scroll on clothesline
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    track.addEventListener("mousedown", (e) => {
+      isDown = true;
+      startX = e.pageX - track.offsetLeft;
+      scrollLeft = track.scrollLeft;
+    });
+    window.addEventListener("mouseup", () => { isDown = false; });
+    track.addEventListener("mousemove", (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - track.offsetLeft;
+      track.scrollLeft = scrollLeft - (x - startX);
+    });
+
+    const prevBtn = document.getElementById("ml-prev");
+    const nextBtn = document.getElementById("ml-next");
+    if (prevBtn) prevBtn.addEventListener("click", () => stepMemoryLightbox(-1));
+    if (nextBtn) nextBtn.addEventListener("click", () => stepMemoryLightbox(1));
+  }
+
+  function openMemoryLightbox(idx) {
+    renderMemoryLightbox(idx);
+    openModal("memory-lightbox-modal");
+  }
+
+  function stepMemoryLightbox(delta) {
+    const memories = (window.RAKER_CONFIG && window.RAKER_CONFIG.event && window.RAKER_CONFIG.event.memories) || [];
+    if (!memories.length) return;
+    renderMemoryLightbox((activeMemoryIdx + delta + memories.length) % memories.length);
+  }
+
+  function renderMemoryLightbox(idx) {
+    const memories = (window.RAKER_CONFIG && window.RAKER_CONFIG.event && window.RAKER_CONFIG.event.memories) || [];
+    if (!memories.length) return;
+    activeMemoryIdx = ((idx % memories.length) + memories.length) % memories.length;
+    const item = memories[activeMemoryIdx];
+
+    const kicker = document.getElementById("ml-kicker");
+    const title = document.getElementById("ml-title");
+    const img = document.getElementById("ml-img");
+    const empty = document.getElementById("ml-empty");
+    const year = document.getElementById("ml-year");
+    const caption = document.getElementById("ml-caption");
+    const counter = document.getElementById("ml-counter");
+
+    if (kicker) kicker.textContent = "Raker Memories · " + (item.year || "Arsip");
+    if (title) title.textContent = item.location || "Dokumentasi Raker";
+    if (year) year.textContent = (item.year || "Arsip") + " · " + (item.location || "");
+    if (caption) caption.textContent = item.caption || "";
+    if (counter) counter.textContent = (activeMemoryIdx + 1) + " / " + memories.length;
+
+    if (item.image && img && empty) {
+      img.src = item.image;
+      img.alt = item.caption || item.location || "Dokumentasi Raker";
+      img.hidden = false;
+      empty.hidden = true;
+    } else if (img && empty) {
+      img.hidden = true;
+      empty.hidden = false;
+    }
+  }
+
+  function setupScrollMotion() {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const revealEls = document.querySelectorAll(".reveal-on-scroll");
+
+    if (reduced || !("IntersectionObserver" in window)) {
+      revealEls.forEach((el) => el.classList.add("is-revealed"));
+    } else if (revealEls.length) {
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-revealed");
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.14 }
+      );
+      revealEls.forEach((el) => obs.observe(el));
+    }
   }
 
   document.addEventListener("DOMContentLoaded", bootstrap);

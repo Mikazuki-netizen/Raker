@@ -1,4 +1,4 @@
-# Website Raker & Gathering 2026 — De Djokja Hotel
+# Website Raker & Gathering 2027 — De Djokja Hotel
 
 Website undangan resmi, peta rute interaktif (dari berangkat hingga pulang kembali), dan daftar peserta interaktif dengan **Google Spreadsheet sebagai database**.
 
@@ -8,7 +8,7 @@ Website undangan resmi, peta rute interaktif (dari berangkat hingga pulang kemba
 
 1. **Halaman Undangan & Dress Code Harian**
    - Tema: *"Akselerasi Transformasi Digital untuk membangun Inovasi, Produktivitas dan Daya Saing"*
-   - Lokasi: **De Djokja Hotel**, Yogyakarta (`11 – 13 Jan 2026`)
+   - Lokasi: **De Djokja Hotel**, Yogyakarta (`11 – 13 Jan 2027`)
    - Kartu Dress Code Interaktif Day 1, Day 2, dan Day 3 (klik kartu untuk langsung melompat ke rute hari tersebut).
 2. **Peta Rute Perjalanan & Rundown Interaktif (Field Map)**
    - Menampilkan alur lengkap mulai dari **Zona Berangkat** → **Kompleks De Djokja Hotel** (Lobby, Ballroom Mataram, Pendopo Budaya) → **Zona Kepulangan**.

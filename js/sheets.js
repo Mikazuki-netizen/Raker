@@ -7,7 +7,7 @@
  * 4. Fallback otomatis ke RAKER_DEFAULT_DATA
  */
 window.RakerSheets = (function () {
-  const STORAGE_KEY = "raker2026_sheet_settings_v1";
+  const STORAGE_KEY = "raker2027_sheet_settings_v1";
 
   function getSettings() {
     const base = window.RAKER_CONFIG || {};
@@ -75,6 +75,8 @@ window.RakerSheets = (function () {
       tanggal: pick(raw, ["tanggal", "date", "tgl"], ""),
       waktu: pick(raw, ["waktu", "jam", "time", "pukul"], "-"),
       fase: normalizePhase(faseRaw),
+      location_id: pick(raw, ["location_id", "lokasi_id", "venue_id"], ""),
+      location_status: pick(raw, ["location_status", "status_lokasi"], ""),
       judul: pick(raw, ["judul", "agenda", "kegiatan", "acara", "title", "aktivitas"], "Agenda " + (idx + 1)),
       lokasi: pick(raw, ["lokasi", "tempat", "ruangan", "location", "venue"], "De Djokja Hotel"),
       pic: pick(raw, ["pic", "pembicara", "koordinator", "speaker", "penanggung_jawab"], "-"),
