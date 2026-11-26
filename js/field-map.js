@@ -23,14 +23,14 @@ window.RakerFieldMap = (function () {
     pulang: "Kepulangan"
   };
 
-  // Physical venues on the Semarang -> Yogyakarta Expedition Map
+  // Physical venues on the Central Java (Semarang -> Yogyakarta) Expedition Map
   const VENUES = {
     SEM: {
       id: "SEM",
       name: "Semarang",
       typeLabel: "Keberangkatan & Kepulangan",
-      x: 145,
-      y: 130,
+      x: 425,
+      y: 112,
       color: "#d97706",
       confirmed: true
     },
@@ -38,8 +38,8 @@ window.RakerFieldMap = (function () {
       id: "HOTEL",
       name: "De Djokja Hotel",
       typeLabel: "Main Venue · Yogyakarta",
-      x: 505,
-      y: 225,
+      x: 430,
+      y: 368,
       color: "#C82027",
       confirmed: true
     },
@@ -47,8 +47,8 @@ window.RakerFieldMap = (function () {
       id: "RESTO",
       name: "External Restaurant",
       typeLabel: "Restoran Eksternal",
-      x: 748,
-      y: 138,
+      x: 625,
+      y: 326,
       color: "#B58A53",
       confirmed: false,
       statusText: "Menunggu Konfirmasi Lokasi"
@@ -57,8 +57,8 @@ window.RakerFieldMap = (function () {
       id: "TOURISM_01",
       name: "Tourism Destination 1",
       typeLabel: "Wisata & Oleh-oleh",
-      x: 720,
-      y: 365,
+      x: 275,
+      y: 386,
       color: "#B58A53",
       confirmed: false,
       statusText: "Menunggu Kepastian Destinasi"
@@ -67,8 +67,8 @@ window.RakerFieldMap = (function () {
       id: "TOURISM_02",
       name: "Destinasi Tambahan",
       typeLabel: "Wisata Opsional",
-      x: 430,
-      y: 412,
+      x: 570,
+      y: 428,
       color: "#89502E",
       confirmed: false,
       statusText: "Opsional"
@@ -383,13 +383,9 @@ window.RakerFieldMap = (function () {
     els.pinsLayer.innerHTML = "";
     const svgNs = "http://www.w3.org/2000/svg";
 
-    locationGroups.forEach((grp, idx) => {
+    locationGroups.forEach((grp) => {
       const v = grp.venue;
       const isSelected = v.id === selectedLocationId;
-      const daysArr = Array.from(grp.days);
-      const dayBadge = daysArr.length > 1
-        ? "D1–D" + daysArr.length
-        : (daysArr[0] || "").replace("Day ", "D");
 
       const g = document.createElementNS(svgNs, "g");
       g.setAttribute(
@@ -402,46 +398,53 @@ window.RakerFieldMap = (function () {
       g.setAttribute("aria-label", v.name + " (" + grp.items.length + " agenda)");
 
       const hit = document.createElementNS(svgNs, "circle");
-      hit.setAttribute("r", "26");
+      hit.setAttribute("cy", "-16");
+      hit.setAttribute("r", "24");
       hit.setAttribute("fill", "transparent");
 
-      const circle = document.createElementNS(svgNs, "circle");
-      circle.setAttribute("r", isSelected ? "16" : "14");
-      circle.setAttribute("fill", v.color);
-      circle.setAttribute("class", "map-pin-circle");
+      // Clean Teardrop Map Pin Icon (anchored at tip 0,0 so it never covers labels)
+      const pinBody = document.createElementNS(svgNs, "path");
+      pinBody.setAttribute("d", "M 0 0 C -7 -9 -11 -15 -11 -21 A 11 11 0 1 1 11 -21 C 11 -15 7 -9 0 0 Z");
+      pinBody.setAttribute("fill", v.color);
+      pinBody.setAttribute("class", "map-pin-circle");
       if (!v.confirmed) {
-        circle.setAttribute("stroke-dasharray", "3 2");
+        pinBody.setAttribute("stroke-dasharray", "3 2");
       }
 
-      const num = document.createElementNS(svgNs, "text");
-      num.setAttribute("y", "4");
-      num.setAttribute("text-anchor", "middle");
-      num.setAttribute("class", "map-pin-num");
-      num.textContent = dayBadge || String(idx + 1).padStart(2, "0");
+      const pinDot = document.createElementNS(svgNs, "circle");
+      pinDot.setAttribute("cx", "0");
+      pinDot.setAttribute("cy", "-21");
+      pinDot.setAttribute("r", "4.2");
+      pinDot.setAttribute("fill", "#FFFFFF");
+      pinDot.setAttribute("pointer-events", "none");
 
-      const labelText = v.name + (grp.items.length > 1 ? " (" + grp.items.length + ")" : "");
-      const labelWidth = Math.max(88, labelText.length * 5.8 + 16);
-      const labelY = v.y > 320 ? 22 : -34;
+      // Compact tooltip (only visible on hover or active pin)
+      const tooltip = document.createElementNS(svgNs, "g");
+      tooltip.setAttribute("class", "map-pin-tooltip");
+      const labelText = v.name + (grp.items.length > 1 ? " · " + grp.items.length + " agenda" : "");
+      const labelWidth = Math.max(84, labelText.length * 5.6 + 16);
 
       const labelBg = document.createElementNS(svgNs, "rect");
       labelBg.setAttribute("x", String(-labelWidth / 2));
-      labelBg.setAttribute("y", String(labelY));
+      labelBg.setAttribute("y", "-54");
       labelBg.setAttribute("width", String(labelWidth));
       labelBg.setAttribute("height", "18");
       labelBg.setAttribute("rx", "6");
       labelBg.setAttribute("class", "map-pin-label-bg");
 
       const labelTxt = document.createElementNS(svgNs, "text");
-      labelTxt.setAttribute("y", String(labelY + 12));
+      labelTxt.setAttribute("y", "-42");
       labelTxt.setAttribute("text-anchor", "middle");
       labelTxt.setAttribute("class", "map-pin-label");
       labelTxt.textContent = labelText;
 
+      tooltip.appendChild(labelBg);
+      tooltip.appendChild(labelTxt);
+
       g.appendChild(hit);
-      g.appendChild(circle);
-      g.appendChild(num);
-      g.appendChild(labelBg);
-      g.appendChild(labelTxt);
+      g.appendChild(pinBody);
+      g.appendChild(pinDot);
+      g.appendChild(tooltip);
 
       const onSelectMarker = () => selectLocationMarker(v.id);
       g.addEventListener("click", onSelectMarker);

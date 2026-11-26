@@ -257,12 +257,44 @@
                 <div class="ticket-inner-border">
                   <div class="ticket-film-strip" aria-hidden="true"></div>
 
-                  <!-- Tugu Jogja Watermark -->
+                  <!-- 8-Bit Tugu Jogja Pixel Graphic -->
                   <div class="ticket-watermark" aria-hidden="true">
-                    <svg viewBox="0 0 120 120" fill="currentColor">
-                      <path
-                        d="M54 108 L54 68 L48 68 L52 44 L56 44 L58 18 L60 8 L62 18 L64 44 L68 44 L72 68 L66 68 L66 108 Z"
-                        opacity="0.2" />
+                    <svg class="tugu-8bit-svg" viewBox="0 0 32 32" shape-rendering="crispEdges">
+                      <!-- Pixel Sparkles -->
+                      <rect class="tugu-sparkle s1" x="6" y="7" width="1" height="1" fill="#C82027" />
+                      <rect class="tugu-sparkle s2" x="25" y="9" width="1" height="1" fill="#B58A53" />
+                      <rect class="tugu-sparkle s3" x="23" y="4" width="1" height="1" fill="#C82027" />
+
+                      <!-- Tugu Jogja 8-Bit Spire & Gold Tip -->
+                      <rect x="15" y="2" width="2" height="2" fill="#B58A53" />
+                      <rect x="14" y="4" width="4" height="1" fill="#C82027" />
+                      <rect x="15" y="5" width="2" height="5" fill="#FBF5E8" stroke="#542B18" stroke-width="0.3" />
+                      <rect x="14" y="9" width="4" height="1" fill="#B58A53" />
+
+                      <!-- Upper Tapered Body -->
+                      <rect x="13" y="10" width="6" height="2" fill="#542B18" />
+                      <rect x="14" y="10" width="4" height="2" fill="#FBF5E8" />
+                      <rect x="12" y="12" width="8" height="7" fill="#542B18" />
+                      <rect x="13" y="12" width="6" height="7" fill="#FBF5E8" />
+                      <!-- Gold & Red Heritage Band -->
+                      <rect x="13" y="13" width="6" height="1" fill="#B58A53" />
+                      <rect x="14" y="15" width="4" height="2" fill="#C82027" />
+                      <rect x="13" y="18" width="6" height="1" fill="#B58A53" />
+
+                      <!-- Mid Cornice -->
+                      <rect x="11" y="19" width="10" height="2" fill="#542B18" />
+                      <rect x="12" y="19" width="8" height="1" fill="#E9D7B7" />
+
+                      <!-- Lower Pedestal -->
+                      <rect x="12" y="21" width="8" height="5" fill="#542B18" />
+                      <rect x="13" y="21" width="6" height="5" fill="#FBF5E8" />
+                      <rect x="15" y="22" width="2" height="3" fill="#B58A53" />
+
+                      <!-- Stepped Base -->
+                      <rect x="10" y="26" width="12" height="2" fill="#542B18" />
+                      <rect x="11" y="26" width="10" height="1" fill="#DFD0B0" />
+                      <rect x="8" y="28" width="16" height="2" fill="#542B18" />
+                      <rect x="9" y="28" width="14" height="1" fill="#C5915A" />
                     </svg>
                   </div>
 
@@ -744,86 +776,84 @@
                     </radialGradient>
                   </defs>
 
-                  <!-- Aged Parchment Base Terrain Layer -->
-                  <rect width="920" height="520" rx="18" fill="#F3E7CE" />
+                  <!-- Aged Parchment Sea + Central Java (Jawa Tengah & DIY) Map Silhouette -->
+                  <rect width="920" height="520" rx="18" fill="#E8DAC0" />
                   <rect width="920" height="520" rx="18" fill="url(#topo-grid)" />
+
+                  <!-- Sea Labels -->
+                  <text x="190" y="62" class="zone-sub" opacity="0.65" letter-spacing="3">LAUT JAWA</text>
+                  <text x="160" y="486" class="zone-sub" opacity="0.65" letter-spacing="3">SAMUDRA HINDIA</text>
+
+                  <!-- Central Java & DIY Landmass (Tegal -> Semarang -> Jepara -> Solo -> Jogja -> Cilacap) -->
+                  <path
+                    d="M 18 158 L 95 148 L 180 142 L 265 135 L 350 124 L 425 112 L 478 96 L 525 66 L 575 74 L 605 102 L 690 116 L 785 128 L 902 152 L 902 448 L 780 456 L 675 466 L 560 458 L 465 446 L 375 426 L 280 412 L 185 405 L 105 402 L 18 395 Z"
+                    fill="#F5EAD3" stroke="#89502E" stroke-width="1.8" stroke-linejoin="round" />
+
+                  <!-- Neighboring Province Dotted Borders (Jawa Barat & Jawa Timur) -->
+                  <path d="M 85 150 Q 95 275 105 402" fill="none" stroke="rgba(137, 80, 46, 0.3)" stroke-width="1.2" stroke-dasharray="4 4" />
+                  <path d="M 760 124 Q 740 290 775 456" fill="none" stroke="rgba(137, 80, 46, 0.3)" stroke-width="1.2" stroke-dasharray="4 4" />
+
+                  <!-- Batik Frame -->
                   <rect x="8" y="8" width="904" height="504" rx="14" fill="none" stroke="url(#batik-border)" stroke-width="8" />
                   <rect x="14" y="14" width="892" height="492" rx="10" fill="none" stroke="rgba(84, 43, 24, 0.22)" stroke-width="1.2" />
 
-                  <!-- Topographic Contour Lines & Illustrated Mountains (Parallax Depth) -->
-                  <g fill="none" stroke="rgba(137, 80, 46, 0.18)" stroke-width="1.2">
-                    <path d="M 16 115 Q 170 60 340 125 T 700 90 T 904 140" />
-                    <path d="M 16 140 Q 180 85 350 150 T 710 115 T 904 165" />
-                    <path d="M 16 395 Q 220 345 430 405 T 790 370 T 904 415" />
-                    <path d="M 16 425 Q 230 375 440 435 T 800 400 T 904 445" />
-                  </g>
-
-                  <!-- Illustrated Merapi & Temple Landmarks -->
+                  <!-- Central Java Mountain Chain & Regional Labels -->
                   <g class="map-landmarks" aria-hidden="true">
-                    <!-- Merapi Mountain Silhouette -->
-                    <path d="M 290 120 L 345 68 L 385 95 L 430 56 L 478 120 Z" fill="rgba(84, 43, 24, 0.08)" stroke="rgba(84, 43, 24, 0.16)" stroke-width="1" />
-                    <!-- Tugu Jogja Silhouette near Hotel -->
-                    <g transform="translate(612, 168)" opacity="0.24" fill="#542B18">
-                      <rect x="-8" y="16" width="16" height="6" />
-                      <rect x="-5" y="0" width="10" height="16" />
-                      <polygon points="0,-10 4,0 -4,0" />
+                    <!-- Mt. Slamet -->
+                    <path d="M 145 256 L 172 224 L 198 256 Z" fill="rgba(84, 43, 24, 0.08)" stroke="rgba(84, 43, 24, 0.2)" stroke-width="1" />
+                    <text x="172" y="268" text-anchor="middle" class="zone-sub" opacity="0.6">G. Slamet</text>
+                    <!-- Mt. Sindoro & Sumbing -->
+                    <path d="M 278 265 L 302 232 L 322 252 L 342 228 L 366 265 Z" fill="rgba(84, 43, 24, 0.08)" stroke="rgba(84, 43, 24, 0.2)" stroke-width="1" />
+                    <text x="322" y="278" text-anchor="middle" class="zone-sub" opacity="0.6">Sindoro–Sumbing</text>
+                    <!-- Mt. Merbabu & Merapi (Between Semarang & Jogja) -->
+                    <path d="M 432 288 L 456 250 L 474 270 L 494 242 L 518 288 Z" fill="rgba(200, 32, 39, 0.08)" stroke="rgba(84, 43, 24, 0.24)" stroke-width="1.1" />
+                    <text x="476" y="301" text-anchor="middle" class="zone-sub" opacity="0.72">Merapi · Merbabu</text>
+                    <!-- Corridor Hints -->
+                    <text x="384" y="188" text-anchor="end" class="zone-sub" opacity="0.58">Bawen · Salatiga</text>
+                    <text x="384" y="242" text-anchor="end" class="zone-sub" opacity="0.58">Magelang</text>
+                    <text x="618" y="255" text-anchor="middle" class="zone-sub" opacity="0.55">Surakarta</text>
+                    <!-- Tugu Jogja Silhouette near De Djokja Hotel -->
+                    <g transform="translate(462, 344)" opacity="0.26" fill="#542B18">
+                      <rect x="-7" y="14" width="14" height="5" />
+                      <rect x="-4" y="0" width="8" height="14" />
+                      <polygon points="0,-9 3.5,0 -3.5,0" />
                     </g>
-                    <!-- Candi Silhouette near Tourism -->
-                    <g transform="translate(788, 326)" opacity="0.2" fill="#542B18">
-                      <rect x="-14" y="18" width="28" height="8" />
-                      <rect x="-10" y="10" width="20" height="8" />
-                      <polygon points="0,-4 7,10 -7,10" />
-                    </g>
                   </g>
 
-                  <!-- District / Physical Venue Zones -->
-                  <!-- Physical Location 1: Semarang (Departure & Return Hub) -->
-                  <g class="map-zone" transform="translate(145, 130)">
-                    <circle r="78" fill="url(#zone-glow-amber)" />
-                    <rect x="-66" y="-34" width="132" height="68" rx="14" fill="#FBF5E8" fill-opacity="0.88"
-                      stroke="#89502E" stroke-opacity="0.35" stroke-dasharray="4 4" />
-                    <text x="0" y="-8" text-anchor="middle" class="zone-title">SEMARANG</text>
-                    <text x="0" y="10" text-anchor="middle" class="zone-sub">Berangkat &amp; Pulang</text>
-                  </g>
-
-                  <!-- Physical Location 2: De Djokja Hotel (Unified Main Venue) -->
-                  <g class="map-zone" transform="translate(505, 225)">
-                    <ellipse rx="145" ry="96" fill="url(#zone-glow-teal)" />
-                    <rect x="-112" y="-58" width="224" height="116" rx="18" fill="#FBF5E8" fill-opacity="0.92"
-                      stroke="#C82027" stroke-opacity="0.38" stroke-width="1.5" />
-                    <text x="0" y="-34" text-anchor="middle" class="zone-title is-venue">DE DJOKJA HOTEL</text>
-                    <text x="0" y="-18" text-anchor="middle" class="zone-sub">Main Venue · Day 1, 2 &amp; 3</text>
-                    <rect x="-92" y="-6" width="84" height="44" rx="8" fill="#F3E5C8" stroke="#D8C29D" />
-                    <text x="-50" y="14" text-anchor="middle" class="subzone-label">Ballroom</text>
-                    <text x="-50" y="28" text-anchor="middle" class="subzone-sub">Pleno &amp; Raker</text>
-                    <rect x="8" y="-6" width="84" height="44" rx="8" fill="#F3E5C8" stroke="#D8C29D" />
-                    <text x="50" y="14" text-anchor="middle" class="subzone-label">Lobby &amp; Resto</text>
-                    <text x="50" y="28" text-anchor="middle" class="subzone-sub">Check-in / Out</text>
-                  </g>
-
-                  <!-- Physical Location 3: External Restaurant (Unconfirmed Placeholder) -->
-                  <g class="map-zone" transform="translate(748, 138)">
-                    <circle r="58" fill="url(#zone-glow-amber)" />
-                    <rect x="-66" y="-30" width="132" height="60" rx="12" fill="#FBF5E8" fill-opacity="0.82"
-                      stroke="#B58A53" stroke-dasharray="5 4" />
-                    <text x="0" y="-6" text-anchor="middle" class="zone-title">EXTERNAL RESTO</text>
-                    <text x="0" y="12" text-anchor="middle" class="zone-sub">Menunggu Konfirmasi</text>
-                  </g>
-
-                  <!-- Physical Location 4 & 5: Tourism Destinations (Day 3) -->
-                  <g class="map-zone" transform="translate(720, 365)">
-                    <circle r="60" fill="url(#zone-glow-amber)" />
-                    <rect x="-68" y="-28" width="136" height="56" rx="12" fill="#FBF5E8" fill-opacity="0.82"
-                      stroke="#B58A53" stroke-dasharray="5 4" />
-                    <text x="0" y="-6" text-anchor="middle" class="zone-title">WISATA &amp; OLEH-OLEH</text>
-                    <text x="0" y="12" text-anchor="middle" class="zone-sub">Destinasi 1 (Pending)</text>
+                  <!-- Physical Venue Labels (Placed beside/below pins so pins never cover text) -->
+                  <g class="map-zone" transform="translate(322, 102)">
+                    <rect x="-66" y="-22" width="132" height="44" rx="10" fill="#FBF5E8" fill-opacity="0.92"
+                      stroke="#89502E" stroke-opacity="0.35" />
+                    <text x="0" y="-3" text-anchor="middle" class="zone-title">SEMARANG</text>
+                    <text x="0" y="12" text-anchor="middle" class="zone-sub">Berangkat &amp; Pulang</text>
                   </g>
 
                   <g class="map-zone" transform="translate(430, 412)">
-                    <rect x="-68" y="-24" width="136" height="48" rx="12" fill="#FBF5E8" fill-opacity="0.72"
-                      stroke="#B58A53" stroke-dasharray="4 4" />
-                    <text x="0" y="-3" text-anchor="middle" class="zone-title">DESTINASI TAMBAHAN</text>
-                    <text x="0" y="13" text-anchor="middle" class="zone-sub">Opsional · Day 3</text>
+                    <rect x="-92" y="-24" width="184" height="48" rx="12" fill="#FBF5E8" fill-opacity="0.95"
+                      stroke="#C82027" stroke-opacity="0.45" stroke-width="1.4" />
+                    <text x="0" y="-4" text-anchor="middle" class="zone-title is-venue">DE DJOKJA HOTEL</text>
+                    <text x="0" y="12" text-anchor="middle" class="zone-sub">Main Venue · Day 1, 2 &amp; 3</text>
+                  </g>
+
+                  <g class="map-zone" transform="translate(715, 326)">
+                    <rect x="-72" y="-22" width="144" height="44" rx="10" fill="#FBF5E8" fill-opacity="0.88"
+                      stroke="#B58A53" stroke-dasharray="4 3" />
+                    <text x="0" y="-3" text-anchor="middle" class="zone-title">EXTERNAL RESTO</text>
+                    <text x="0" y="12" text-anchor="middle" class="zone-sub">Menunggu Konfirmasi</text>
+                  </g>
+
+                  <g class="map-zone" transform="translate(185, 386)">
+                    <rect x="-68" y="-22" width="136" height="44" rx="10" fill="#FBF5E8" fill-opacity="0.88"
+                      stroke="#B58A53" stroke-dasharray="4 3" />
+                    <text x="0" y="-3" text-anchor="middle" class="zone-title">WISATA &amp; OLEH-OLEH</text>
+                    <text x="0" y="12" text-anchor="middle" class="zone-sub">Destinasi 1 (Pending)</text>
+                  </g>
+
+                  <g class="map-zone" transform="translate(658, 428)">
+                    <rect x="-68" y="-20" width="136" height="40" rx="10" fill="#FBF5E8" fill-opacity="0.82"
+                      stroke="#B58A53" stroke-dasharray="4 3" />
+                    <text x="0" y="-2" text-anchor="middle" class="zone-title">WISATA TAMBAHAN</text>
+                    <text x="0" y="12" text-anchor="middle" class="zone-sub">Opsional · Day 3</text>
                   </g>
 
                   <!-- Vintage Expedition Compass Rose -->

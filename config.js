@@ -88,11 +88,11 @@ window.RAKER_CONFIG = {
         caption: "RAKER 2025 — Bigger, Better & More Sustainable"
       },
       {
-        id: "mem-2027",
-        image: "assets/raker-2027-bali.webp",
-        year: "2027",
+        id: "mem-2026",
+        image: "assets/raker-2026-bali.webp",
+        year: "2026",
         location: "Bali",
-        caption: "RAKER 2027 — Kebersamaan & Kolaborasi PT SIBA SURYA di Bali"
+        caption: "RAKER 2026 — Kebersamaan & Kolaborasi PT SIBA SURYA di Bali"
       }
     ]
   }

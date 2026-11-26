@@ -1066,12 +1066,64 @@ main,
 
 .ticket-watermark {
   position: absolute;
-  right: -8px;
-  bottom: 26px;
-  width: 112px;
-  height: 112px;
-  color: #8c3024;
+  right: 4px;
+  bottom: 34px;
+  width: 96px;
+  height: 96px;
   pointer-events: none;
+  opacity: 0.45;
+  z-index: 1;
+}
+
+.tugu-8bit-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+  animation: tugu8BitBob 2.4s steps(4, end) infinite;
+}
+
+.tugu-sparkle {
+  animation: tuguSparkle 1.4s steps(2, end) infinite;
+}
+
+.tugu-sparkle.s2 {
+  animation-delay: 0.45s;
+}
+
+.tugu-sparkle.s3 {
+  animation-delay: 0.9s;
+}
+
+@keyframes tugu8BitBob {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-3px) rotate(-1.5deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-2px) rotate(1.5deg);
+  }
+}
+
+@keyframes tuguSparkle {
+  0%, 100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tugu-8bit-svg,
+  .tugu-sparkle {
+    animation: none;
+  }
 }
 
 .pass-header {
@@ -1275,7 +1327,11 @@ main,
   }
 
   .ticket-watermark {
-    display: none;
+    width: 72px;
+    height: 72px;
+    right: 4px;
+    bottom: 28px;
+    opacity: 0.36;
   }
 }
 
@@ -1768,10 +1824,23 @@ main,
 
 .map-pin-circle {
   stroke: #ffffff;
-  stroke-width: 2.5;
+  stroke-width: 2;
   transition: transform var(--dur-micro) var(--ease-out-cubic);
   transform-box: fill-box;
-  transform-origin: center;
+  transform-origin: bottom center;
+  filter: drop-shadow(0 3px 4px rgba(48, 32, 23, 0.28));
+}
+
+.map-pin-tooltip {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease;
+}
+
+.map-pin:hover .map-pin-tooltip,
+.map-pin:focus-visible .map-pin-tooltip,
+.map-pin.is-active .map-pin-tooltip {
+  opacity: 1;
 }
 
 .map-pin-num {
@@ -2808,9 +2877,11 @@ main,
 
 .torn-paper-clip img {
   width: 100%;
-  height: 320px;
-  object-fit: cover;
-  object-position: center top;
+  height: auto;
+  max-height: 440px;
+  object-fit: contain;
+  object-position: center;
+  background: #f6f1e7;
   display: block;
   outline: 1px solid oklch(0 0 0 / 0.1);
   outline-offset: -1px;
@@ -2856,10 +2927,18 @@ main,
 @media (max-width: 768px) {
   .dc-lookbook-stage {
     grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .torn-paper-frame {
+    padding: 8px;
+    transform: none;
   }
 
   .torn-paper-clip img {
-    height: 260px;
+    height: auto;
+    max-height: 58vh;
+    object-fit: contain;
   }
 }
 
