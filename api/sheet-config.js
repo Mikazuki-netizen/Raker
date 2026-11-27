@@ -24,19 +24,24 @@ async function kvGet(url, token) {
   if (!res.ok) return null;
   const json = await res.json();
   if (!json || !json.result) return null;
-  return typeof json.result === "string" ? JSON.parse(json.result) : json.result;
+  let parsed = json.result;
+  if (typeof parsed === "string") parsed = JSON.parse(parsed);
+  if (typeof parsed === "string") parsed = JSON.parse(parsed);
+  return parsed && typeof parsed === "object" ? parsed : null;
 }
 
 async function kvSet(url, token, value) {
-  const res = await fetch(`${url}/set/${encodeURIComponent(KV_KEY)}`, {
+  const res = await fetch(url, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(JSON.stringify(value))
+    body: JSON.stringify(["SET", KV_KEY, JSON.stringify(value)])
   });
-  return res.ok;
+  if (!res.ok) return false;
+  const json = await res.json().catch(() => null);
+  return Boolean(json && !json.error);
 }
 
 function resolveKvCredentials() {

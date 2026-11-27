@@ -126,7 +126,7 @@ window.RakerSheets = (function () {
   async function fetchCsvRows(url) {
     const separator = url.includes("?") ? "&" : "?";
     const bustUrl = url + separator + "_ts=" + Date.now();
-    const res = await fetch(bustUrl, { cache: "no-store" });
+    const res = await fetch(bustUrl);
     if (!res.ok) {
       throw new Error("HTTP " + res.status + " saat mengambil data spreadsheet.");
     }
@@ -139,14 +139,17 @@ window.RakerSheets = (function () {
 
   async function fetchServerConfig() {
     try {
-      const res = await fetch("/api/sheet-config?_ts=" + Date.now(), { cache: "no-store" });
+      const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+      const timer = controller ? setTimeout(() => controller.abort(), 4000) : null;
+      const res = await fetch("/api/sheet-config?_ts=" + Date.now(), controller ? { signal: controller.signal } : undefined);
+      if (timer) clearTimeout(timer);
       if (!res.ok) return null;
       const json = await res.json();
       if (json && json.ok && json.config && json.persistent) {
         return json.config;
       }
     } catch (_) {
-      // Ignore when running on static local server without /api
+      // Ignore when running on static local server without /api or on timeout
     }
     return null;
   }
