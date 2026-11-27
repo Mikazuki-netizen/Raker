@@ -39,10 +39,37 @@ async function kvSet(url, token, value) {
   return res.ok;
 }
 
+function resolveKvCredentials() {
+  let kvUrl =
+    process.env.KV_REST_API_URL ||
+    process.env.UPSTASH_REDIS_REST_URL ||
+    process.env.STORAGE_KV_REST_API_URL ||
+    process.env.STORAGE_UPSTASH_REDIS_REST_URL ||
+    process.env.STORAGE_REST_API_URL ||
+    "";
+  let kvToken =
+    process.env.KV_REST_API_TOKEN ||
+    process.env.UPSTASH_REDIS_REST_TOKEN ||
+    process.env.STORAGE_KV_REST_API_TOKEN ||
+    process.env.STORAGE_UPSTASH_REDIS_REST_TOKEN ||
+    process.env.STORAGE_REST_API_TOKEN ||
+    "";
+
+  if (!kvUrl || !kvToken) {
+    const keys = Object.keys(process.env);
+    const urlKey = keys.find((k) => k.endsWith("_REST_API_URL") && process.env[k]);
+    const tokenKey = keys.find((k) => k.endsWith("_REST_API_TOKEN") && process.env[k]);
+    if (urlKey && tokenKey) {
+      kvUrl = kvUrl || process.env[urlKey];
+      kvToken = kvToken || process.env[tokenKey];
+    }
+  }
+  return { kvUrl, kvToken };
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
-  const kvUrl = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-  const kvToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+  const { kvUrl, kvToken } = resolveKvCredentials();
   const adminPassword = process.env.ADMIN_PASSWORD || "5555";
 
   if (req.method === "GET") {

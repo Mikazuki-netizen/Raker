@@ -20,12 +20,12 @@ window.RakerSheets = (function () {
     }
 
     return {
-      spreadsheetUrl: base.spreadsheetUrl || saved.spreadsheetUrl || "",
-      rundownSheetName: base.rundownSheetName || saved.rundownSheetName || "rundown",
-      pesertaSheetName: base.pesertaSheetName || saved.pesertaSheetName || "peserta",
-      rundownCsvUrl: base.rundownCsvUrl || saved.rundownCsvUrl || "",
-      pesertaCsvUrl: base.pesertaCsvUrl || saved.pesertaCsvUrl || "",
-      appsScriptUrl: base.appsScriptUrl || saved.appsScriptUrl || ""
+      spreadsheetUrl: saved.spreadsheetUrl || base.spreadsheetUrl || "",
+      rundownSheetName: saved.rundownSheetName || base.rundownSheetName || "rundown",
+      pesertaSheetName: saved.pesertaSheetName || base.pesertaSheetName || "peserta",
+      rundownCsvUrl: saved.rundownCsvUrl || base.rundownCsvUrl || "",
+      pesertaCsvUrl: saved.pesertaCsvUrl || base.pesertaCsvUrl || "",
+      appsScriptUrl: saved.appsScriptUrl || base.appsScriptUrl || ""
     };
   }
 
@@ -220,10 +220,17 @@ window.RakerSheets = (function () {
       settings.pesertaCsvUrl ||
       (sheetId ? window.RakerCsv.buildGvizCsvUrl(sheetId, settings.pesertaSheetName) : "");
 
-    const [rundownResult, pesertaResult] = await Promise.all([
+    const [rundownSet, pesertaSet] = await Promise.allSettled([
       rundownUrl ? fetchCsvRows(rundownUrl) : Promise.resolve(null),
       pesertaUrl ? fetchCsvRows(pesertaUrl) : Promise.resolve(null)
     ]);
+
+    const rundownResult = rundownSet.status === "fulfilled" ? rundownSet.value : null;
+    const pesertaResult = pesertaSet.status === "fulfilled" ? pesertaSet.value : null;
+
+    if (rundownSet.status === "rejected" && pesertaSet.status === "rejected") {
+      throw rundownSet.reason || pesertaSet.reason;
+    }
 
     return {
       mode: "live",
