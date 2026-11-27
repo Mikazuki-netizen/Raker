@@ -26,10 +26,50 @@
       <div class="curtain-batik-edge"></div>
     </div>
     <div class="curtain-centerpiece">
-      <img src="assets/gunungan-jogja.png" alt="" class="curtain-gunungan" />
-      <img src="assets/logo-siba-surya.png" alt="PT SIBA SURYA" class="curtain-logo" />
-      <span class="curtain-kicker">THE JOURNEY OF INNOVATION</span>
-      <span class="curtain-sub">From Jogja Heritage to Beyond Transportation</span>
+      <div class="curtain-popup-card">
+        <!-- Javanese Ukiran Corner Ornaments -->
+        <div class="curtain-ukiran ukiran-top-left" aria-hidden="true">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+            <path d="M0 0 L24 0 C14 0 0 14 0 24 Z" fill="#79352A" opacity="0.85" />
+            <path d="M3 3 C16 3 26 13 26 26" stroke="#C49349" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M3 14 C10 14 14 18 14 26" stroke="#C49349" stroke-width="1.4" stroke-linecap="round" />
+            <circle cx="8" cy="8" r="2.5" fill="#C49349" />
+          </svg>
+        </div>
+        <div class="curtain-ukiran ukiran-top-right" aria-hidden="true">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+            <path d="M42 0 L18 0 C28 0 42 14 42 24 Z" fill="#79352A" opacity="0.85" />
+            <path d="M39 3 C26 3 16 13 16 26" stroke="#C49349" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M39 14 C32 14 28 18 28 26" stroke="#C49349" stroke-width="1.4" stroke-linecap="round" />
+            <circle cx="34" cy="8" r="2.5" fill="#C49349" />
+          </svg>
+        </div>
+        <div class="curtain-ukiran ukiran-bottom-left" aria-hidden="true">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+            <path d="M0 42 L24 42 C14 42 0 28 0 18 Z" fill="#79352A" opacity="0.85" />
+            <path d="M3 39 C16 39 26 29 26 16" stroke="#C49349" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M3 28 C10 28 14 24 14 16" stroke="#C49349" stroke-width="1.4" stroke-linecap="round" />
+            <circle cx="8" cy="34" r="2.5" fill="#C49349" />
+          </svg>
+        </div>
+        <div class="curtain-ukiran ukiran-bottom-right" aria-hidden="true">
+          <svg width="42" height="42" viewBox="0 0 42 42" fill="none">
+            <path d="M42 42 L18 42 C28 42 42 28 42 18 Z" fill="#79352A" opacity="0.85" />
+            <path d="M39 39 C26 39 16 29 16 16" stroke="#C49349" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M39 28 C32 28 28 24 28 16" stroke="#C49349" stroke-width="1.4" stroke-linecap="round" />
+            <circle cx="34" cy="34" r="2.5" fill="#C49349" />
+          </svg>
+        </div>
+
+        <!-- Inner Heritage Border Frame -->
+        <div class="curtain-inner-border" aria-hidden="true"></div>
+
+        <img src="assets/gunungan-jogja.png" alt="" class="curtain-gunungan" />
+        <img src="assets/logo-siba-surya.png" alt="PT SIBA SURYA" class="curtain-logo" />
+        <span class="curtain-kicker">THE JOURNEY OF INNOVATION</span>
+        <span class="curtain-sub">From Jogja Heritage to Beyond Transportation</span>
+        <span class="curtain-hint">✦ Ketuk untuk Melanjutkan ✦</span>
+      </div>
     </div>
   </div>
   <!-- Loopable Vintage Jogja Doodle Background -->
@@ -165,22 +205,65 @@
               </p>
 
               <div class="meta-cards">
-                <div class="meta-card">
-                  <div class="meta-icon" aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                      stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                      <circle cx="12" cy="10" r="3" />
-                    </svg>
+                <!-- Location Card with Floating Vintage Polaroid Travel Memory -->
+                <div class="meta-card meta-card-location">
+                  <div class="meta-card-info">
+                    <div class="meta-icon" aria-hidden="true">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                        <circle cx="12" cy="10" r="3" />
+                      </svg>
+                    </div>
+                    <div class="meta-text-wrap">
+                      <span class="meta-label">LOKASI</span>
+                      <strong class="meta-value" id="event-location">De Djokja Hotel</strong>
+                      <span class="meta-sub" id="event-city">Yogyakarta</span>
+                    </div>
+
+                    <!-- Subtle vintage Jogja temple skyline sketch in background -->
+                    <div class="meta-card-bg-sketch" aria-hidden="true">
+                      <svg viewBox="0 0 160 36" fill="none" preserveAspectRatio="none">
+                        <path d="M0 34 L160 34" stroke="#713C29" stroke-width="0.8" opacity="0.22" />
+                        <path d="M10 34 L10 28 C10 24 14 22 16 20 L16 15 L18 15 L18 20 C20 22 24 24 24 28 L24 34" stroke="#713C29" stroke-width="0.8" opacity="0.18" />
+                        <path d="M38 34 L38 26 C38 22 43 18 46 14 L46 8 L48 8 L48 14 C51 18 56 22 56 26 L56 34" stroke="#713C29" stroke-width="0.8" opacity="0.2" />
+                        <path d="M72 34 L72 30 C72 28 74 26 76 24 L76 21 L78 21 L78 24 C80 26 82 28 82 30 L82 34" stroke="#713C29" stroke-width="0.8" opacity="0.16" />
+                        <path d="M98 34 L98 25 C98 20 102 16 106 12 L106 6 L108 6 L108 12 C112 16 116 20 116 25 L116 34" stroke="#713C29" stroke-width="0.8" opacity="0.18" />
+                      </svg>
+                    </div>
                   </div>
-                  <div>
-                    <span class="meta-label">Lokasi</span>
-                    <strong class="meta-value" id="event-location">De Djokja Hotel</strong>
-                    <span class="meta-sub" id="event-city">Yogyakarta</span>
+
+                  <!-- Floating Polaroid Hotel Preview Frame -->
+                  <div class="polaroid-hotel-wrapper" id="polaroid-hotel-trigger" role="button" tabindex="0"
+                    title="Klik untuk memperbesar foto De Djokja Hotel" aria-label="Buka foto preview De Djokja Hotel">
+                    <!-- Hand-drawn sparkles on top-right -->
+                    <div class="polaroid-sparkles" aria-hidden="true">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <line x1="12" y1="2" x2="12" y2="7" stroke="#B87936" stroke-width="2.2" stroke-linecap="round" />
+                        <line x1="12" y1="17" x2="12" y2="22" stroke="#B87936" stroke-width="2.2" stroke-linecap="round" />
+                        <line x1="2" y1="12" x2="7" y2="12" stroke="#B87936" stroke-width="2.2" stroke-linecap="round" />
+                        <line x1="17" y1="12" x2="22" y2="12" stroke="#B87936" stroke-width="2.2" stroke-linecap="round" />
+                        <circle cx="12" cy="12" r="2.2" fill="#B87936" />
+                      </svg>
+                    </div>
+
+                    <div class="polaroid-frame">
+                      <div class="polaroid-photo-box">
+                        <img src="assets/de-djokja-hotel.jpg" alt="Eksterior De Djokja Hotel Yogyakarta"
+                          class="polaroid-photo-img" loading="eager" />
+                        <div class="polaroid-glare" aria-hidden="true"></div>
+                      </div>
+                      <div class="polaroid-caption">
+                        <span class="polaroid-caption-ornament">⚜</span>
+                        <span class="polaroid-caption-text">DE DJOKJA HOTEL • YOGYAKARTA</span>
+                        <span class="polaroid-caption-ornament">⚜</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div class="meta-card">
+                <!-- Date Card -->
+                <div class="meta-card meta-card-date">
                   <div class="meta-icon" aria-hidden="true">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
                       stroke-linecap="round" stroke-linejoin="round">
@@ -617,8 +700,31 @@
           </div>
         </div>
 
-        <!-- Layer 4: Centered 8-Bit SIBA SURYA Truck + Exhaust Smoke + Tire Dust + Spinning Wheels -->
-        <div class="px-truck-anchor">
+        <!-- Layer 4: Centered 8-Bit Convoy (Bus Pariwisata Rombongan Mengawal Truk SIBA SURYA) -->
+        <div class="px-convoy-anchor">
+          <!-- 1. Bus Pariwisata Rombongan Peserta (Tepat di belakang Truk) -->
+          <div class="px-bus-rig">
+            <!-- 8-Bit Side-View Bus Image (Peserta Bersorak Mengibarkan Bendera Merah Putih) -->
+            <img src="assets/siba-bus-8bit.png" alt="Bus Pariwisata Rombongan Peserta Raker PT SIBA SURYA"
+              class="px-bus-sprite" />
+
+            <!-- Authentic Spinning Bus Wheels (Sesuai ban asli yang berputar) -->
+            <div class="px-bus-wheel-anchor" style="left:26.76%; top:86.31%;">
+              <img src="assets/siba-bus-wheel.png" alt="" class="px-bus-wheel-spin" />
+            </div>
+            <div class="px-bus-wheel-anchor" style="left:74.61%; top:86.31%;">
+              <img src="assets/siba-bus-wheel.png" alt="" class="px-bus-wheel-spin" />
+            </div>
+
+            <!-- Tire Dust Clouds Behind Bus Rear Wheels -->
+            <div class="px-dust-emitter is-bus-rear">
+              <span class="px-dust d1"></span>
+              <span class="px-dust d2"></span>
+              <span class="px-dust d3"></span>
+            </div>
+          </div>
+
+          <!-- 2. Flagship Truk SIBA SURYA (Memimpin di Depan) -->
           <div class="px-truck-rig">
             <!-- Exhaust Smoke Puffs from Pipe Tip -->
             <div class="px-smoke-emitter">
@@ -657,20 +763,6 @@
         <div class="px-road">
           <div class="px-road-curb"></div>
           <div class="px-road-dashes"></div>
-        </div>
-      </div>
-
-      <div class="container">
-        <div class="story-milestones is-centered">
-          <div class="story-milestone-pill">
-            <span class="sm-dot"></span>
-            <span>Keberangkatan Rombongan</span>
-          </div>
-          <div class="story-milestone-arrow" aria-hidden="true">→</div>
-          <div class="story-milestone-pill is-jogja">
-            <span class="sm-dot"></span>
-            <span>De Djokja Hotel · Yogyakarta</span>
-          </div>
         </div>
       </div>
     </section>
@@ -1364,6 +1456,38 @@
                 </svg>
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       MODAL 5: DE DJOKJA HOTEL POLAROID LIGHTBOX
+       =================================================================== -->
+  <div class="modal-backdrop" id="hotel-photo-modal" role="dialog" aria-modal="true" aria-labelledby="hpm-title" hidden>
+    <div class="modal-dialog modal-md hotel-modal-dialog">
+      <div class="modal-header">
+        <div>
+          <span class="modal-kicker">Venue Eksplorasi</span>
+          <h3 id="hpm-title">De Djokja Hotel</h3>
+        </div>
+        <button type="button" class="btn-close-modal" data-close-modal="hotel-photo-modal"
+          aria-label="Tutup preview foto hotel">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="hotel-modal-frame">
+          <img src="assets/de-djokja-hotel.jpg" alt="Eksterior Grand Hotel De Djokja Yogyakarta" class="hotel-modal-img" />
+          <div class="hotel-modal-caption">
+            <strong>Grand Hotel De Djokja · Yogyakarta</strong>
+            <p>Main Venue RAKER PT SIBA SURYA 2027 (11–13 Januari 2027). Bangunan ikonik bergaya kolonial-Jawa klasik sejak 1911 di kawasan jantung budaya Yogyakarta.</p>
           </div>
         </div>
       </div>

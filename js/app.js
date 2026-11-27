@@ -119,6 +119,20 @@
       dom.refreshBtn.addEventListener("click", () => syncSpreadsheetData(true));
     }
 
+    // Open Hotel Polaroid Preview Modal
+    const polaroidTrigger = document.getElementById("polaroid-hotel-trigger");
+    if (polaroidTrigger) {
+      polaroidTrigger.addEventListener("click", () => {
+        openModal("hotel-photo-modal");
+      });
+      polaroidTrigger.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openModal("hotel-photo-modal");
+        }
+      });
+    }
+
     // Open Spreadsheet Connector modal (always lock with password 5555)
     if (dom.openSheetBtn) {
       dom.openSheetBtn.addEventListener("click", () => {
@@ -513,7 +527,7 @@
       }, 900);
     };
     curtain.addEventListener("click", dismiss, { once: true });
-    setTimeout(dismiss, 1250);
+    setTimeout(dismiss, 2000);
   }
 
   let activeMemoryIdx = 0;

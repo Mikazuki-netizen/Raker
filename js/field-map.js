@@ -6,12 +6,12 @@
  */
 window.RakerFieldMap = (function () {
   const PHASE_COLORS = {
-    berangkat: "#d97706",
-    hotel: "#C82027",
-    raker: "#0f766e",
-    ishoma: "#b91c1c",
-    budaya: "#89502E",
-    pulang: "#475569"
+    berangkat: "#B65A28",
+    hotel: "#397B91",
+    raker: "#287D65",
+    ishoma: "#C49349",
+    budaya: "#C49349",
+    pulang: "#52647D"
   };
 
   const PHASE_LABELS = {
@@ -628,6 +628,88 @@ window.RakerFieldMap = (function () {
     cameraAnimId = requestAnimationFrame(frame);
   }
 
+  function getCategoryIcon(item) {
+    const fase = (item.fase || "").toLowerCase();
+    const judul = (item.judul || "").toLowerCase();
+
+    if (fase === "berangkat") {
+      return (
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M19 17h2l.64-2.54A6 6 0 0 0 22 13V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v7c0 .41.04.82.12 1.21L3 17h2"></path>' +
+        '<circle cx="7" cy="17" r="2"></circle><path d="M9 17h6"></path><circle cx="17" cy="17" r="2"></circle>' +
+        '</svg>'
+      );
+    }
+    if (fase === "hotel") {
+      if (judul.includes("check-out") || judul.includes("pulang") || judul.includes("persiapan")) {
+        return (
+          '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+          '<rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>' +
+          '<line x1="12" y1="12" x2="12" y2="12.01"></line>' +
+          '</svg>'
+        );
+      }
+      return (
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M3 7v13M21 7v13M3 13h18M6 7h12a3 3 0 0 1 3 3v3H3v-3a3 3 0 0 1 3-3z"></path>' +
+        '</svg>'
+      );
+    }
+    if (fase === "raker") {
+      if (judul.includes("presentasi") || judul.includes("pleno") || judul.includes("roadmap")) {
+        return (
+          '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+          '<rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line>' +
+          '<path d="m7 10 3 3 7-7"></path>' +
+          '</svg>'
+        );
+      }
+      if (judul.includes("penandatanganan") || judul.includes("komitmen") || judul.includes("penutupan")) {
+        return (
+          '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+          '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>' +
+          '<line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line>' +
+          '</svg>'
+        );
+      }
+      return (
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle>' +
+        '<path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>' +
+        '</svg>'
+      );
+    }
+    if (fase === "ishoma") {
+      return (
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>' +
+        '<line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line>' +
+        '</svg>'
+      );
+    }
+    if (fase === "budaya") {
+      return (
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle>' +
+        '<path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>' +
+        '</svg>'
+      );
+    }
+    if (fase === "pulang") {
+      return (
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<rect x="3" y="4" width="18" height="13" rx="2"></rect><circle cx="7" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle>' +
+        '<line x1="3" y1="11" x2="21" y2="11"></line>' +
+        '</svg>'
+      );
+    }
+    return (
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>' +
+      '</svg>'
+    );
+  }
+
   function renderList() {
     if (!els.rundownList) return;
     if (els.rundownCount) {
@@ -645,18 +727,52 @@ window.RakerFieldMap = (function () {
       btn.type = "button";
       btn.className = "rundown-item" + (item.id === selectedId ? " is-active" : "");
       btn.setAttribute("data-rundown-id", item.id);
+      btn.setAttribute("aria-pressed", item.id === selectedId ? "true" : "false");
 
-      const color = PHASE_COLORS[item.fase] || PHASE_COLORS.raker;
+      const color = PHASE_COLORS[item.fase] || "#287D65";
+      const globalIdx = allItems.findIndex((x) => x.id === item.id);
+      const seqNum = globalIdx >= 0 ? String(globalIdx + 1).padStart(2, "0") : String(idx + 1).padStart(2, "0");
+      const month = (item.tanggal ? item.tanggal.split(" ")[1] : "JAN").toUpperCase() || "JAN";
+      const cleanTime = (item.waktu || "").replace(/\s*-\s*/g, " – ");
+      const dateDisplay = (item.hari || "Day 1") + (item.tanggal ? " • " + item.tanggal : "");
+
       btn.innerHTML =
-        '<span class="ri-index" style="background:' + color + '">' + String(idx + 1).padStart(2, "0") + "</span>" +
-        "<div>" +
-        '<div class="ri-top">' +
-        "<span>" + escapeHtml(item.hari) + (item.tanggal ? " · " + escapeHtml(item.tanggal) : "") + "</span>" +
-        '<span class="ri-time">' + escapeHtml(item.waktu) + "</span>" +
-        "</div>" +
-        '<div class="ri-title">' + escapeHtml(item.judul) + "</div>" +
-        '<div class="ri-loc">' + escapeHtml(item.lokasi) + "</div>" +
-        "</div>";
+        '<div class="ri-timeline-node" aria-hidden="true">' +
+          '<span class="ri-dot" style="background:' + color + '"></span>' +
+        '</div>' +
+        '<div class="ri-badge" style="background:' + color + '">' +
+          '<span class="ri-badge-num">' + seqNum + '</span>' +
+          '<span class="ri-badge-month">' + month + '</span>' +
+        '</div>' +
+        '<div class="ri-body">' +
+          '<div class="ri-header-row">' +
+            '<div class="ri-header-left">' +
+              '<span class="ri-cat-icon" aria-hidden="true">' + getCategoryIcon(item) + '</span>' +
+              '<span class="ri-date">' + escapeHtml(dateDisplay) + '</span>' +
+            '</div>' +
+            '<div class="ri-time-pill">' +
+              '<svg class="ri-clock-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+                '<circle cx="12" cy="12" r="10"></circle>' +
+                '<polyline points="12 6 12 12 16 14"></polyline>' +
+              '</svg>' +
+              '<span>' + escapeHtml(cleanTime) + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="ri-title" title="' + escapeHtml(item.judul) + '">' + escapeHtml(item.judul) + '</div>' +
+          '<div class="ri-loc" title="' + escapeHtml(item.lokasi) + '">' +
+            '<svg class="ri-loc-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+              '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>' +
+              '<circle cx="12" cy="10" r="3"></circle>' +
+            '</svg>' +
+            '<span>' + escapeHtml(item.lokasi) + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ri-flourish" aria-hidden="true">' +
+          '<svg width="42" height="42" viewBox="0 0 44 44" fill="none">' +
+            '<path d="M44 44 C26 44 44 26 22 22 C14 20 20 14 24 10 C28 6 36 8 36 14 C36 18 30 20 26 20 C18 20 12 14 12 6 C12 2 15 0 18 0" stroke="#C49349" stroke-width="1.2" stroke-linecap="round" opacity="0.35"/>' +
+            '<path d="M44 32 C36 32 32 36 32 44" stroke="#C49349" stroke-width="1" stroke-linecap="round" opacity="0.25"/>' +
+          '</svg>' +
+        '</div>';
 
       btn.addEventListener("click", () => selectStop(item.id, false));
       fragment.appendChild(btn);

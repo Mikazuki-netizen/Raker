@@ -219,12 +219,21 @@ window.RakerParticipants = (function () {
     }
 
     if (els.showing) {
-      els.showing.textContent =
-        "Menampilkan " +
-        filteredParticipants.length +
-        " dari " +
-        allParticipants.length +
-        " peserta";
+      if (filteredParticipants.length > 15) {
+        els.showing.innerHTML =
+          'Menampilkan <strong>15</strong> baris pertama dari <strong>' +
+          filteredParticipants.length +
+          '</strong> peserta <span class="table-scroll-hint">(Scroll ke bawah untuk melihat semua ' +
+          filteredParticipants.length +
+          ' peserta)</span>';
+      } else {
+        els.showing.innerHTML =
+          'Menampilkan <strong>' +
+          filteredParticipants.length +
+          '</strong> dari <strong>' +
+          allParticipants.length +
+          '</strong> peserta';
+      }
     }
 
     if (!filteredParticipants.length) {
@@ -241,16 +250,22 @@ window.RakerParticipants = (function () {
 
       const roleText = p.peran || p.status || "Peserta";
       const statusClass = getStatusClass(roleText);
+      const isFemale =
+        String(p.gender || "").toLowerCase().includes("f") ||
+        String(p.gender || "").toLowerCase().includes("perempuan") ||
+        String(p.gender || "").toLowerCase().includes("wanita");
+      const genderClass = isFemale ? "is-female" : "is-male";
+      const genderLabel = p.gender || "-";
 
       tr.innerHTML =
-        '<td class="td-mono">' + escapeHtml(p.no) + "</td>" +
-        '<td><strong>' + escapeHtml(p.nama) + "</strong></td>" +
+        '<td class="td-mono td-center">' + escapeHtml(p.no) + "</td>" +
+        '<td><div class="participant-name-cell"><strong class="participant-name">' + escapeHtml(p.nama) + "</strong></div></td>" +
         '<td class="td-mono">' + escapeHtml(p.nip || p.no_kamar || "-") + "</td>" +
-        "<td>" + escapeHtml(p.kantor || p.kelompok_transport || "-") + "</td>" +
-        "<td>" + escapeHtml(p.divisi) + "</td>" +
-        "<td>" + escapeHtml(p.jabatan) + "</td>" +
-        "<td>" + escapeHtml(p.gender || "-") + "</td>" +
-        '<td><span class="status-pill ' + statusClass + '">' + escapeHtml(roleText) + "</span></td>";
+        '<td><span class="office-text">' + escapeHtml(p.kantor || p.kelompok_transport || "-") + "</span></td>" +
+        '<td><span class="dept-text">' + escapeHtml(p.divisi) + "</span></td>" +
+        '<td><span class="job-position-text">' + escapeHtml(p.jabatan) + "</span></td>" +
+        '<td class="td-center"><span class="gender-pill ' + genderClass + '">' + escapeHtml(genderLabel) + "</span></td>" +
+        '<td class="td-center"><span class="status-pill ' + statusClass + '">' + escapeHtml(roleText) + "</span></td>";
 
       const openRow = () => {
         if (typeof onRowInspect === "function") onRowInspect(p);
@@ -314,7 +329,10 @@ window.RakerParticipants = (function () {
 
   function getStatusClass(status) {
     const s = String(status || "").toLowerCase();
-    if (s.includes("konfirm") || s.includes("hadir") || s.includes("peserta") || s.includes("panitia") || s.includes("bod")) return "is-confirmed";
+    if (s.includes("bod") || s.includes("direksi") || s.includes("komisaris")) return "is-bod";
+    if (s.includes("panitia")) return "is-panitia";
+    if (s.includes("peserta")) return "is-peserta";
+    if (s.includes("konfirm") || s.includes("hadir")) return "is-confirmed";
     if (s.includes("batal") || s.includes("berhalangan") || s.includes("tidak")) return "is-absent";
     return "is-pending";
   }
