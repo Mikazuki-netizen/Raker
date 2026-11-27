@@ -539,8 +539,8 @@ window.RakerFieldMap = (function () {
           const activeClass = item.id === selectedId ? " is-active" : "";
           return (
             '<li><button type="button" class="ldp-act-btn' + activeClass + '" data-ldp-item="' + escapeHtml(item.id) + '">' +
-              '<span class="ldp-act-meta">' + escapeHtml(item.hari) + " · " + escapeHtml(item.waktu) + "</span>" +
-              '<strong>' + escapeHtml(item.judul) + "</strong>" +
+            '<span class="ldp-act-meta">' + escapeHtml(item.hari) + " · " + escapeHtml(item.waktu) + "</span>" +
+            '<strong>' + escapeHtml(item.judul) + "</strong>" +
             "</button></li>"
           );
         })
@@ -650,12 +650,12 @@ window.RakerFieldMap = (function () {
       btn.innerHTML =
         '<span class="ri-index" style="background:' + color + '">' + String(idx + 1).padStart(2, "0") + "</span>" +
         "<div>" +
-          '<div class="ri-top">' +
-            "<span>" + escapeHtml(item.hari) + (item.tanggal ? " · " + escapeHtml(item.tanggal) : "") + "</span>" +
-            '<span class="ri-time">' + escapeHtml(item.waktu) + "</span>" +
-          "</div>" +
-          '<div class="ri-title">' + escapeHtml(item.judul) + "</div>" +
-          '<div class="ri-loc">' + escapeHtml(item.lokasi) + "</div>" +
+        '<div class="ri-top">' +
+        "<span>" + escapeHtml(item.hari) + (item.tanggal ? " · " + escapeHtml(item.tanggal) : "") + "</span>" +
+        '<span class="ri-time">' + escapeHtml(item.waktu) + "</span>" +
+        "</div>" +
+        '<div class="ri-title">' + escapeHtml(item.judul) + "</div>" +
+        '<div class="ri-loc">' + escapeHtml(item.lokasi) + "</div>" +
         "</div>";
 
       btn.addEventListener("click", () => selectStop(item.id, false));

@@ -105,9 +105,9 @@ window.RakerParticipants = (function () {
   }
 
   function populateFilterOptions() {
-    fillSelect(els.divisi, "Semua Divisi", uniqueValues("divisi"));
-    fillSelect(els.transport, "Semua Transport", uniqueValues("kelompok_transport"));
-    fillSelect(els.status, "Semua Status", uniqueValues("status"));
+    fillSelect(els.divisi, "Semua Departemen", uniqueValues("divisi"));
+    fillSelect(els.transport, "Semua Kantor", uniqueValues("kantor"));
+    fillSelect(els.status, "Semua Peran", uniqueValues("peran"));
   }
 
   function uniqueValues(key) {
@@ -134,9 +134,10 @@ window.RakerParticipants = (function () {
 
   function updateKpis() {
     const total = allParticipants.length;
-    const confirmed = allParticipants.filter((p) =>
-      p.status.toLowerCase().includes("konfirm") || p.status.toLowerCase().includes("hadir")
-    ).length;
+    const confirmed = allParticipants.filter((p) => {
+      const s = String(p.status || p.peran || "").toLowerCase();
+      return s.includes("konfirm") || s.includes("hadir") || s.includes("peserta") || s.includes("panitia") || s.includes("bod");
+    }).length;
     const pending = total - confirmed;
     const divisions = uniqueValues("divisi").length;
 
@@ -164,15 +165,19 @@ window.RakerParticipants = (function () {
   function applyAndRender() {
     filteredParticipants = allParticipants.filter((p) => {
       if (filters.divisi !== "ALL" && p.divisi !== filters.divisi) return false;
-      if (filters.transport !== "ALL" && p.kelompok_transport !== filters.transport) return false;
-      if (filters.status !== "ALL" && p.status !== filters.status) return false;
+      if (filters.transport !== "ALL" && (p.kantor || p.kelompok_transport) !== filters.transport) return false;
+      if (filters.status !== "ALL" && (p.peran || p.status) !== filters.status) return false;
 
       if (!filters.query) return true;
       const haystack = [
         p.no,
         p.nama,
+        p.nip,
+        p.kantor,
         p.jabatan,
         p.divisi,
+        p.gender,
+        p.peran,
         p.kelompok_transport,
         p.no_kamar,
         p.status,
@@ -224,7 +229,7 @@ window.RakerParticipants = (function () {
 
     if (!filteredParticipants.length) {
       els.tbody.innerHTML =
-        '<tr><td colspan="7" class="empty-state">Tidak ada peserta yang sesuai dengan pencarian atau filter.</td></tr>';
+        '<tr><td colspan="8" class="empty-state">Tidak ada peserta yang sesuai dengan pencarian atau filter.</td></tr>';
       return;
     }
 
@@ -234,17 +239,18 @@ window.RakerParticipants = (function () {
       tr.setAttribute("tabindex", "0");
       tr.setAttribute("aria-label", "Lihat detail " + p.nama);
 
-      const initials = getInitials(p.nama);
-      const statusClass = getStatusClass(p.status);
+      const roleText = p.peran || p.status || "Peserta";
+      const statusClass = getStatusClass(roleText);
 
       tr.innerHTML =
         '<td class="td-mono">' + escapeHtml(p.no) + "</td>" +
-        '<td><div class="participant-name-cell"><span class="avatar-mini" aria-hidden="true">' + escapeHtml(initials) + "</span><strong>" + escapeHtml(p.nama) + "</strong></div></td>" +
-        "<td>" + escapeHtml(p.jabatan) + "</td>" +
+        '<td><strong>' + escapeHtml(p.nama) + "</strong></td>" +
+        '<td class="td-mono">' + escapeHtml(p.nip || p.no_kamar || "-") + "</td>" +
+        "<td>" + escapeHtml(p.kantor || p.kelompok_transport || "-") + "</td>" +
         "<td>" + escapeHtml(p.divisi) + "</td>" +
-        "<td>" + escapeHtml(p.kelompok_transport) + "</td>" +
-        '<td class="td-mono">' + escapeHtml(p.no_kamar) + "</td>" +
-        '<td><span class="status-pill ' + statusClass + '">' + escapeHtml(p.status) + "</span></td>";
+        "<td>" + escapeHtml(p.jabatan) + "</td>" +
+        "<td>" + escapeHtml(p.gender || "-") + "</td>" +
+        '<td><span class="status-pill ' + statusClass + '">' + escapeHtml(roleText) + "</span></td>";
 
       const openRow = () => {
         if (typeof onRowInspect === "function") onRowInspect(p);
@@ -280,14 +286,12 @@ window.RakerParticipants = (function () {
     const headers = [
       "no",
       "nama",
-      "jabatan",
+      "nip",
+      "kantor",
       "divisi",
-      "kelompok_transport",
-      "no_kamar",
-      "kontak",
-      "ukuran_seragam",
-      "status",
-      "catatan"
+      "jabatan",
+      "gender",
+      "peran"
     ];
     const csv = window.RakerCsv.stringify(headers, filteredParticipants);
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -310,7 +314,7 @@ window.RakerParticipants = (function () {
 
   function getStatusClass(status) {
     const s = String(status || "").toLowerCase();
-    if (s.includes("konfirm") || s.includes("hadir")) return "is-confirmed";
+    if (s.includes("konfirm") || s.includes("hadir") || s.includes("peserta") || s.includes("panitia") || s.includes("bod")) return "is-confirmed";
     if (s.includes("batal") || s.includes("berhalangan") || s.includes("tidak")) return "is-absent";
     return "is-pending";
   }

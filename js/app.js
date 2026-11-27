@@ -37,6 +37,25 @@
     populateSheetFormFromSettings();
     setupScrollMotion();
     await syncSpreadsheetData(false);
+    setupAutoSync();
+  }
+
+  let lastSyncAt = 0;
+
+  function setupAutoSync() {
+    lastSyncAt = Date.now();
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && Date.now() - lastSyncAt > 15000) {
+        lastSyncAt = Date.now();
+        syncSpreadsheetData(false);
+      }
+    });
+    setInterval(() => {
+      if (document.visibilityState === "visible") {
+        lastSyncAt = Date.now();
+        syncSpreadsheetData(false);
+      }
+    }, 60000);
   }
 
   function bindGlobalInteractions() {
@@ -116,6 +135,7 @@
       });
     }
 
+    let unlockedSheetPassword = "";
     const lockForm = document.getElementById("sheet-lock-form");
     if (lockForm) {
       lockForm.addEventListener("submit", (e) => {
@@ -124,6 +144,7 @@
         const lockErr = document.getElementById("sheet-lock-error");
         const settingsView = document.getElementById("sheet-settings-view");
         if (pwdInput && pwdInput.value === "5555") {
+          unlockedSheetPassword = pwdInput.value;
           lockForm.hidden = true;
           if (settingsView) settingsView.hidden = false;
           if (lockErr) lockErr.hidden = true;
@@ -167,14 +188,18 @@
         e.preventDefault();
         const nextSettings = {
           spreadsheetUrl: dom.inputSheetUrl.value.trim(),
-          rundownSheetName: dom.inputRundownTab.value.trim() || "Rundown",
-          pesertaSheetName: dom.inputPesertaTab.value.trim() || "Peserta",
+          rundownSheetName: dom.inputRundownTab.value.trim() || "rundown",
+          pesertaSheetName: dom.inputPesertaTab.value.trim() || "peserta",
           rundownCsvUrl: dom.inputRundownCsv.value.trim(),
           pesertaCsvUrl: dom.inputPesertaCsv.value.trim(),
           appsScriptUrl: (window.RAKER_CONFIG && window.RAKER_CONFIG.appsScriptUrl) || ""
         };
         window.RakerSheets.saveSettings(nextSettings);
+        const serverRes = await window.RakerSheets.saveServerConfig(nextSettings, unlockedSheetPassword);
         const ok = await syncSpreadsheetData(true);
+        if (serverRes && serverRes.persistent) {
+          showToast("Link spreadsheet disimpan secara global untuk seluruh pengguna.");
+        }
         if (ok) closeModal("spreadsheet-modal");
       });
     }
@@ -260,8 +285,6 @@
         dom.syncDot.classList.remove("is-error");
       }
       if (dom.syncLabel) dom.syncLabel.textContent = isLive ? "Google Sheets Live" : "Mode Demo";
-      if (dom.rundownSourceTag) dom.rundownSourceTag.textContent = "Sumber: " + data.sourceLabel;
-      if (dom.pesertaSourceTag) dom.pesertaSourceTag.textContent = "Sumber: " + data.sourceLabel;
 
       const timeStr = data.syncedAt.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
       if (dom.heroSyncNote) {
@@ -375,12 +398,12 @@
     if (grid) {
       grid.innerHTML =
         detailField("No. Urut", "#" + escapeHtml(p.no)) +
-        detailField("Status Kehadiran", escapeHtml(p.status)) +
-        detailField("Transport / Bus", escapeHtml(p.kelompok_transport)) +
-        detailField("No. Kamar De Djokja", escapeHtml(p.no_kamar)) +
-        detailField("Kontak / WhatsApp", escapeHtml(p.kontak)) +
-        detailField("Ukuran Seragam", escapeHtml(p.ukuran_seragam)) +
-        '<div class="pm-field is-full"><span>Catatan Khusus</span><strong>' + escapeHtml(p.catatan || "-") + "</strong></div>";
+        detailField("NIP", escapeHtml(p.nip || "-")) +
+        detailField("Kantor", escapeHtml(p.kantor || p.kelompok_transport || "-")) +
+        detailField("Departemen", escapeHtml(p.divisi || "-")) +
+        detailField("Job Position", escapeHtml(p.jabatan || "-")) +
+        detailField("Gender", escapeHtml(p.gender || "-")) +
+        '<div class="pm-field is-full"><span>Peran</span><strong>' + escapeHtml(p.peran || p.status || "Peserta") + "</strong></div>";
     }
 
     openModal("participant-modal");

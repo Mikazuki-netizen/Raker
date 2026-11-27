@@ -689,9 +689,6 @@
               Klik pin di peta atau kartu rundown untuk melihat detail tiap pos.
             </p>
           </div>
-          <div class="section-header-meta">
-            <span class="data-source-tag" id="rundown-source-tag">Sumber: Default Template</span>
-          </div>
         </div>
 
         <!-- Day Tabs & Stepper Toolbar -->
@@ -990,9 +987,6 @@
               baris peserta untuk detail lengkap.
             </p>
           </div>
-          <div class="section-header-meta">
-            <span class="data-source-tag" id="peserta-source-tag">Sumber: Default Template</span>
-          </div>
         </div>
 
         <!-- Participant KPI Strip -->
@@ -1058,17 +1052,19 @@
                 <tr>
                   <th data-sort="no" class="sortable is-sorted-asc">No <span class="sort-arrow"
                       aria-hidden="true">↑</span></th>
-                  <th data-sort="nama" class="sortable">Nama Peserta <span class="sort-arrow"
+                  <th data-sort="nama" class="sortable">Nama <span class="sort-arrow"
                       aria-hidden="true">↕</span></th>
-                  <th data-sort="jabatan" class="sortable">Jabatan <span class="sort-arrow" aria-hidden="true">↕</span>
+                  <th data-sort="nip" class="sortable">NIP <span class="sort-arrow" aria-hidden="true">↕</span>
                   </th>
-                  <th data-sort="divisi" class="sortable">Divisi / Unit <span class="sort-arrow"
+                  <th data-sort="kantor" class="sortable">Kantor <span class="sort-arrow"
                       aria-hidden="true">↕</span></th>
-                  <th data-sort="kelompok_transport" class="sortable">Transport / Bus <span class="sort-arrow"
+                  <th data-sort="divisi" class="sortable">Departemen <span class="sort-arrow"
                       aria-hidden="true">↕</span></th>
-                  <th data-sort="no_kamar" class="sortable">No. Kamar <span class="sort-arrow"
+                  <th data-sort="jabatan" class="sortable">Job Position <span class="sort-arrow"
                       aria-hidden="true">↕</span></th>
-                  <th data-sort="status" class="sortable">Status <span class="sort-arrow" aria-hidden="true">↕</span>
+                  <th data-sort="gender" class="sortable">Gender <span class="sort-arrow" aria-hidden="true">↕</span>
+                  </th>
+                  <th data-sort="peran" class="sortable">Peran <span class="sort-arrow" aria-hidden="true">↕</span>
                   </th>
                 </tr>
               </thead>
@@ -1158,12 +1154,12 @@
         <form id="sheet-lock-form" class="sheet-form">
           <div class="form-group">
             <label for="input-sheet-password">Masukkan Password Pengaturan</label>
-            <input type="password" id="input-sheet-password" class="text-input" autocomplete="off" required />
+            <div class="password-inline-row">
+              <input type="password" id="input-sheet-password" class="text-input" autocomplete="off" required />
+              <button type="submit" class="btn btn-primary btn-save-pwd">Save</button>
+            </div>
             <small class="form-help" id="sheet-lock-error" style="color: var(--accent-crimson);" hidden>Password
               salah.</small>
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Buka Pengaturan</button>
           </div>
         </form>
 
@@ -1377,13 +1373,13 @@
   <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
   <!-- Scripts -->
-  <script src="config.js"></script>
-  <script src="js/default-data.js"></script>
-  <script src="js/csv.js"></script>
-  <script src="js/sheets.js"></script>
-  <script src="js/field-map.js"></script>
-  <script src="js/participants.js"></script>
-  <script src="js/app.js"></script>
+  <script src="config.js?v=20261127"></script>
+  <script src="js/default-data.js?v=20261127"></script>
+  <script src="js/csv.js?v=20261127"></script>
+  <script src="js/sheets.js?v=20261127"></script>
+  <script src="js/field-map.js?v=20261127"></script>
+  <script src="js/participants.js?v=20261127"></script>
+  <script src="js/app.js?v=20261127"></script>
 </body>
 
 </html>

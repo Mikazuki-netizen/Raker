@@ -15,11 +15,11 @@
 window.RAKER_CONFIG = {
   // Tempelkan link Google Spreadsheet utama Anda di sini, contoh:
   // "https://docs.google.com/spreadsheets/d/1AbCdEfGhIjKlMnOpQrStUvWxYz/edit"
-  spreadsheetUrl: "",
+  spreadsheetUrl: "https://docs.google.com/spreadsheets/d/1VHLK_qjf_-vnhYYwoq3Qavz6yHXZoIyNeIjdbUtZODs/edit?usp=sharing",
 
   // Nama tab di Google Spreadsheet (case-sensitive sesuai nama tab)
-  rundownSheetName: "Rundown",
-  pesertaSheetName: "Peserta",
+  rundownSheetName: "rundown",
+  pesertaSheetName: "peserta",
 
   // Opsional: Jika menggunakan "Publish to web" (CSV) per tab, isi URL di bawah ini
   rundownCsvUrl: "",
@@ -68,10 +68,10 @@ window.RAKER_CONFIG = {
     memories: [
       {
         id: "mem-2023",
-        image: "assets/raker-2023.webp",
+        image: "assets/raker-2023-malang.webp",
         year: "2023",
-        location: "Semarang",
-        caption: "RAKER 2023 — Siba Surya Bergerak Maju"
+        location: "Malang",
+        caption: "RAKER 2023 — Kebersamaan & Kolaborasi PT SIBA SURYA di Malang"
       },
       {
         id: "mem-2024",

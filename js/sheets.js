@@ -20,12 +20,12 @@ window.RakerSheets = (function () {
     }
 
     return {
-      spreadsheetUrl: saved.spreadsheetUrl ?? base.spreadsheetUrl ?? "",
-      rundownSheetName: saved.rundownSheetName || base.rundownSheetName || "Rundown",
-      pesertaSheetName: saved.pesertaSheetName || base.pesertaSheetName || "Peserta",
-      rundownCsvUrl: saved.rundownCsvUrl ?? base.rundownCsvUrl ?? "",
-      pesertaCsvUrl: saved.pesertaCsvUrl ?? base.pesertaCsvUrl ?? "",
-      appsScriptUrl: saved.appsScriptUrl ?? base.appsScriptUrl ?? ""
+      spreadsheetUrl: base.spreadsheetUrl || saved.spreadsheetUrl || "",
+      rundownSheetName: base.rundownSheetName || saved.rundownSheetName || "rundown",
+      pesertaSheetName: base.pesertaSheetName || saved.pesertaSheetName || "peserta",
+      rundownCsvUrl: base.rundownCsvUrl || saved.rundownCsvUrl || "",
+      pesertaCsvUrl: base.pesertaCsvUrl || saved.pesertaCsvUrl || "",
+      appsScriptUrl: base.appsScriptUrl || saved.appsScriptUrl || ""
     };
   }
 
@@ -98,16 +98,27 @@ window.RakerSheets = (function () {
   }
 
   function normalizePesertaRow(raw, idx) {
+    const kantor = pick(raw, ["kantor", "office", "cabang", "kelompok_transport", "transport", "bus"], "-");
+    const departemen = pick(raw, ["departemen", "divisi", "unit", "unit_kerja", "department"], "-");
+    const jabatan = pick(raw, ["job_position", "jabatan", "posisi", "role", "title"], "-");
+    const nip = pick(raw, ["nip", "nik", "employee_id", "no_kamar", "kamar"], "-");
+    const gender = pick(raw, ["gender", "jenis_kelamin", "kelamin"], "-");
+    const peran = pick(raw, ["peran", "status", "kehadiran", "konfirmasi"], "Peserta");
+
     return {
       no: pick(raw, ["no", "id", "nomor", "urutan"], String(idx + 1)),
       nama: pick(raw, ["nama", "nama_peserta", "name", "full_name"], "Peserta " + (idx + 1)),
-      jabatan: pick(raw, ["jabatan", "posisi", "role", "title"], "-"),
-      divisi: pick(raw, ["divisi", "unit", "departemen", "unit_kerja", "department"], "-"),
-      kelompok_transport: pick(raw, ["kelompok_transport", "transport", "bus", "kelompok", "armada"], "-"),
-      no_kamar: pick(raw, ["no_kamar", "kamar", "room", "room_no"], "-"),
+      nip: nip,
+      kantor: kantor,
+      jabatan: jabatan,
+      divisi: departemen,
+      gender: gender,
+      peran: peran,
+      kelompok_transport: pick(raw, ["kelompok_transport", "transport", "bus", "kelompok", "armada"], kantor),
+      no_kamar: pick(raw, ["no_kamar", "kamar", "room", "room_no"], nip),
       kontak: pick(raw, ["kontak", "hp", "no_hp", "wa", "whatsapp", "telepon", "phone"], "-"),
       ukuran_seragam: pick(raw, ["ukuran_seragam", "ukuran", "size", "baju"], "-"),
-      status: pick(raw, ["status", "kehadiran", "konfirmasi"], "Terkonfirmasi"),
+      status: peran,
       catatan: pick(raw, ["catatan", "keterangan", "notes", "alergi"], "-")
     };
   }
@@ -126,8 +137,54 @@ window.RakerSheets = (function () {
     return window.RakerCsv.parse(text);
   }
 
+  async function fetchServerConfig() {
+    try {
+      const res = await fetch("/api/sheet-config?_ts=" + Date.now(), { cache: "no-store" });
+      if (!res.ok) return null;
+      const json = await res.json();
+      if (json && json.ok && json.config && json.persistent) {
+        return json.config;
+      }
+    } catch (_) {
+      // Ignore when running on static local server without /api
+    }
+    return null;
+  }
+
+  async function saveServerConfig(next, password) {
+    try {
+      const res = await fetch("/api/sheet-config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          password: password || "",
+          spreadsheetUrl: next.spreadsheetUrl,
+          rundownSheetName: next.rundownSheetName,
+          pesertaSheetName: next.pesertaSheetName,
+          rundownCsvUrl: next.rundownCsvUrl,
+          pesertaCsvUrl: next.pesertaCsvUrl
+        })
+      });
+      if (!res.ok) return { ok: false, persistent: false };
+      return await res.json();
+    } catch (_) {
+      return { ok: false, persistent: false };
+    }
+  }
+
   async function loadAllData() {
-    const settings = getSettings();
+    let settings = getSettings();
+    const serverConfig = await fetchServerConfig();
+    if (serverConfig && serverConfig.spreadsheetUrl) {
+      settings = {
+        ...settings,
+        spreadsheetUrl: serverConfig.spreadsheetUrl,
+        rundownSheetName: serverConfig.rundownSheetName || settings.rundownSheetName,
+        pesertaSheetName: serverConfig.pesertaSheetName || settings.pesertaSheetName,
+        rundownCsvUrl: serverConfig.rundownCsvUrl ?? settings.rundownCsvUrl,
+        pesertaCsvUrl: serverConfig.pesertaCsvUrl ?? settings.pesertaCsvUrl
+      };
+    }
 
     if (!isConfigured(settings)) {
       return {
@@ -180,6 +237,7 @@ window.RakerSheets = (function () {
   return {
     getSettings,
     saveSettings,
+    saveServerConfig,
     clearSavedSettings,
     isConfigured,
     loadAllData

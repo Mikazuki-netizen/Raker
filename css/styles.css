@@ -1096,30 +1096,39 @@ main,
 }
 
 @keyframes tugu8BitBob {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0) rotate(0deg);
   }
+
   25% {
     transform: translateY(-3px) rotate(-1.5deg);
   }
+
   50% {
     transform: translateY(-4px) rotate(0deg);
   }
+
   75% {
     transform: translateY(-2px) rotate(1.5deg);
   }
 }
 
 @keyframes tuguSparkle {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.25;
   }
+
   50% {
     opacity: 1;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .tugu-8bit-svg,
   .tugu-sparkle {
     animation: none;
@@ -4582,4 +4591,22 @@ main,
     margin-top: 10px;
     box-shadow: var(--shadow-sm);
   }
+}
+
+/* Password Gate Inline Save Row */
+.password-inline-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.password-inline-row .text-input {
+  flex: 1 1 auto;
+}
+
+.btn-save-pwd {
+  min-height: 44px;
+  padding: 0 18px;
+  font-size: 0.85rem;
+  flex-shrink: 0;
 }
