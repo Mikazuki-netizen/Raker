@@ -7,7 +7,7 @@ window.RakerCsv = (function () {
    */
   function parse(text) {
     if (!text) return [];
-    const clean = text.replace(/^\uFEFF/, "");
+    const clean = text.replace(/^\uFEFF/, "").replace(/\0/g, "");
     const rows = [];
     let row = [];
     let field = "";

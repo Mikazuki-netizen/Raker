@@ -1,10 +1,11 @@
 /**
  * Konektor Database Google Spreadsheet untuk Rundown & Daftar Peserta.
  * Mendukung:
- * 1. URL Google Spreadsheet utama (Anyone with the link -> Viewer) via endpoint gviz CSV
- * 2. URL CSV "Publish to web" per tab
- * 3. URL Apps Script Web App JSON
- * 4. Fallback otomatis ke RAKER_DEFAULT_DATA
+ * 1. JSONP langsung ke Google Sheets (Bypass browser CORS secara native tanpa server/proxy)
+ * 2. Vercel Serverless Function Proxy (/api/sheets)
+ * 3. Direct CSV fetch ("Publish to web" / gviz CSV)
+ * 4. Google Apps Script Web App JSON
+ * 5. Fallback otomatis ke RAKER_DEFAULT_DATA (93 Peserta & 13 Agenda Rundown)
  */
 window.RakerSheets = (function () {
   const STORAGE_KEY = "raker2027_sheet_settings_v1";
@@ -21,8 +22,10 @@ window.RakerSheets = (function () {
       saved = {};
     }
 
+    const spreadsheetUrl = saved.spreadsheetUrl || base.spreadsheetUrl || DEFAULT_SHEET_URL;
+
     return {
-      spreadsheetUrl: saved.spreadsheetUrl || base.spreadsheetUrl || DEFAULT_SHEET_URL,
+      spreadsheetUrl: spreadsheetUrl,
       rundownSheetName: saved.rundownSheetName || base.rundownSheetName || "rundown",
       pesertaSheetName: saved.pesertaSheetName || base.pesertaSheetName || "peserta",
       rundownCsvUrl: saved.rundownCsvUrl || base.rundownCsvUrl || "",
@@ -57,6 +60,7 @@ window.RakerSheets = (function () {
   }
 
   function pick(obj, keys, fallback = "") {
+    if (!obj) return fallback;
     for (let i = 0; i < keys.length; i += 1) {
       const val = obj[keys[i]];
       if (val !== undefined && val !== null && String(val).trim() !== "") {
@@ -64,6 +68,19 @@ window.RakerSheets = (function () {
       }
     }
     return fallback;
+  }
+
+  function formatSheetDate(val) {
+    if (!val) return "";
+    val = String(val).trim();
+    if (val.startsWith("Date(") && val.endsWith(")")) {
+      const parts = val.slice(5, -1).split(",").map(Number);
+      if (parts.length >= 3) {
+        const d = new Date(parts[0], parts[1], parts[2]);
+        return d.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
+      }
+    }
+    return val;
   }
 
   function normalizeRundownRow(raw, idx) {
@@ -74,7 +91,7 @@ window.RakerSheets = (function () {
     return {
       id: pick(raw, ["id", "no", "urutan"], String(idx + 1)),
       hari,
-      tanggal: pick(raw, ["tanggal", "date", "tgl"], ""),
+      tanggal: formatSheetDate(pick(raw, ["tanggal", "date", "tgl"], "")),
       waktu: pick(raw, ["waktu", "jam", "time", "pukul"], "-"),
       fase: normalizePhase(faseRaw),
       location_id: pick(raw, ["location_id", "lokasi_id", "venue_id"], ""),
@@ -100,6 +117,9 @@ window.RakerSheets = (function () {
   }
 
   function normalizePesertaRow(raw, idx) {
+    const nama = pick(raw, ["nama", "nama_peserta", "name", "full_name"]);
+    if (!nama) return null;
+
     const kantor = pick(raw, ["kantor", "office", "cabang", "kelompok_transport", "transport", "bus"], "-");
     const departemen = pick(raw, ["departemen", "divisi", "unit", "unit_kerja", "department"], "-");
     const jabatan = pick(raw, ["job_position", "jabatan", "posisi", "role", "title"], "-");
@@ -109,7 +129,7 @@ window.RakerSheets = (function () {
 
     return {
       no: pick(raw, ["no", "id", "nomor", "urutan"], String(idx + 1)),
-      nama: pick(raw, ["nama", "nama_peserta", "name", "full_name"], "Peserta " + (idx + 1)),
+      nama: nama,
       nip: nip,
       kantor: kantor,
       jabatan: jabatan,
@@ -125,12 +145,96 @@ window.RakerSheets = (function () {
     };
   }
 
+  /**
+   * JSONP Fetch ke Google Sheets.
+   * Sangat andal di lingkungan browser karena tag <script> tidak terkena batasan CORS.
+   */
+  function fetchGvizJsonp(sheetId, tabName, timeoutMs = 8000) {
+    return new Promise((resolve, reject) => {
+      if (typeof document === "undefined") {
+        return reject(new Error("Lingkungan non-browser tidak mendukung JSONP."));
+      }
+
+      const callbackName = "rakerGvizCb_" + Math.random().toString(36).slice(2, 10);
+      const script = document.createElement("script");
+      let finished = false;
+
+      const timer = setTimeout(() => {
+        cleanup();
+        reject(new Error("Timeout memuat tab '" + tabName + "' dari Google Sheets via JSONP."));
+      }, timeoutMs);
+
+      function cleanup() {
+        if (finished) return;
+        finished = true;
+        clearTimeout(timer);
+        try {
+          delete window[callbackName];
+        } catch (_) {
+          window[callbackName] = undefined;
+        }
+        if (script.parentNode) {
+          script.parentNode.removeChild(script);
+        }
+      }
+
+      window[callbackName] = function (data) {
+        cleanup();
+        try {
+          if (!data || !data.table) {
+            return reject(new Error("Format tabel Google Sheets tidak valid."));
+          }
+          const cols = data.table.cols.map((c) =>
+            window.RakerCsv.normalizeKey((c && (c.label || c.id)) || "")
+          );
+          const rows = [];
+          (data.table.rows || []).forEach((r) => {
+            if (!r || !Array.isArray(r.c)) return;
+            const obj = {};
+            let hasValue = false;
+            r.c.forEach((cell, idx) => {
+              const key = cols[idx];
+              if (!key) return;
+              let val = "";
+              if (cell && cell.v !== null && cell.v !== undefined) {
+                val = String(cell.v).trim();
+                hasValue = true;
+              }
+              obj[key] = val;
+            });
+            if (hasValue) rows.push(obj);
+          });
+          resolve(rows);
+        } catch (err) {
+          reject(err);
+        }
+      };
+
+      script.onerror = function () {
+        cleanup();
+        reject(new Error("Gagal mengeksekusi script Google Sheets JSONP."));
+      };
+
+      script.src =
+        "https://docs.google.com/spreadsheets/d/" +
+        encodeURIComponent(sheetId) +
+        "/gviz/tq?tqx=responseHandler:" +
+        callbackName +
+        "&sheet=" +
+        encodeURIComponent(tabName) +
+        "&_ts=" +
+        Date.now();
+
+      document.head.appendChild(script);
+    });
+  }
+
   async function fetchCsvRows(url) {
     const separator = url.includes("?") ? "&" : "?";
     const bustUrl = url + separator + "_ts=" + Date.now();
     const res = await fetch(bustUrl);
     if (!res.ok) {
-      throw new Error("HTTP " + res.status + " saat mengambil data spreadsheet.");
+      throw new Error("HTTP " + res.status + " saat mengambil data CSV.");
     }
     const text = await res.text();
     if (text.trim().startsWith("<!DOCTYPE") || text.trim().startsWith("<html")) {
@@ -139,10 +243,77 @@ window.RakerSheets = (function () {
     return window.RakerCsv.parse(text);
   }
 
+  /**
+   * Mengambil data satu tab dengan waterfall fallback multi-layer:
+   * 1. URL CSV khusus (jika ada)
+   * 2. JSONP langsung Google Sheets (No CORS issue di browser)
+   * 3. Vercel Serverless Function Proxy (/api/sheets)
+   * 4. Direct gviz CSV fetch
+   */
+  async function loadSheetTab(sheetId, tabName, directCsvUrl) {
+    if (directCsvUrl) {
+      try {
+        const rows = await fetchCsvRows(directCsvUrl);
+        if (rows && rows.length > 0) return rows;
+      } catch (err) {
+        console.warn("[RakerSheets] Direct CSV gagal, mencoba fallback:", err);
+      }
+    }
+
+    if (sheetId && typeof document !== "undefined") {
+      try {
+        const rows = await fetchGvizJsonp(sheetId, tabName);
+        if (rows && rows.length > 0) return rows;
+      } catch (err) {
+        console.warn("[RakerSheets] JSONP gagal untuk tab '" + tabName + "', mencoba proxy:", err);
+      }
+    }
+
+    if (sheetId && typeof window !== "undefined" && window.location && window.location.origin) {
+      try {
+        const proxyUrl = window.location.origin + "/api/sheets?sheetId=" + encodeURIComponent(sheetId) + "&sheet=" + encodeURIComponent(tabName);
+        const rows = await fetchCsvRows(proxyUrl);
+        if (rows && rows.length > 0) return rows;
+      } catch (err) {
+        console.warn("[RakerSheets] Proxy /api/sheets gagal, mencoba direct CSV:", err);
+      }
+    }
+
+    if (sheetId) {
+      const fallbackUrl = window.RakerCsv.buildGvizCsvUrl(sheetId, tabName);
+      return await fetchCsvRows(fallbackUrl);
+    }
+
+    return null;
+  }
+
   async function loadAllData() {
     const settings = getSettings();
 
-    if (!isConfigured(settings)) {
+    // Mode Apps Script JSON
+    if (settings.appsScriptUrl) {
+      try {
+        const res = await fetch(settings.appsScriptUrl, { cache: "no-store" });
+        if (res.ok) {
+          const json = await res.json();
+          const rundownRaw = Array.isArray(json.rundown) ? json.rundown : [];
+          const pesertaRaw = Array.isArray(json.peserta) ? json.peserta : [];
+          return {
+            mode: "live",
+            sourceLabel: "Google Sheets (Apps Script)",
+            rundown: rundownRaw.map(normalizeRundownRow),
+            peserta: pesertaRaw.map(normalizePesertaRow).filter(Boolean),
+            syncedAt: new Date()
+          };
+        }
+      } catch (e) {
+        console.warn("[RakerSheets] Apps Script gagal:", e);
+      }
+    }
+
+    const sheetId = window.RakerCsv.extractSpreadsheetId(settings.spreadsheetUrl);
+
+    if (!sheetId && !settings.rundownCsvUrl && !settings.pesertaCsvUrl) {
       return {
         mode: "demo",
         sourceLabel: "Default Template (Demo)",
@@ -152,48 +323,33 @@ window.RakerSheets = (function () {
       };
     }
 
-    // Mode Apps Script JSON
-    if (settings.appsScriptUrl) {
-      const res = await fetch(settings.appsScriptUrl, { cache: "no-store" });
-      if (!res.ok) throw new Error("Gagal memuat endpoint Apps Script (" + res.status + ").");
-      const json = await res.json();
-      const rundownRaw = Array.isArray(json.rundown) ? json.rundown : [];
-      const pesertaRaw = Array.isArray(json.peserta) ? json.peserta : [];
-      return {
-        mode: "live",
-        sourceLabel: "Google Sheets (Apps Script)",
-        rundown: rundownRaw.map(normalizeRundownRow),
-        peserta: pesertaRaw.map(normalizePesertaRow),
-        syncedAt: new Date()
-      };
-    }
-
-    const sheetId = window.RakerCsv.extractSpreadsheetId(settings.spreadsheetUrl);
-    const rundownUrl =
-      settings.rundownCsvUrl ||
-      (sheetId ? window.RakerCsv.buildGvizCsvUrl(sheetId, settings.rundownSheetName) : "");
-    const pesertaUrl =
-      settings.pesertaCsvUrl ||
-      (sheetId ? window.RakerCsv.buildGvizCsvUrl(sheetId, settings.pesertaSheetName) : "");
-
     const [rundownSet, pesertaSet] = await Promise.allSettled([
-      rundownUrl ? fetchCsvRows(rundownUrl) : Promise.resolve(null),
-      pesertaUrl ? fetchCsvRows(pesertaUrl) : Promise.resolve(null)
+      loadSheetTab(sheetId, settings.rundownSheetName, settings.rundownCsvUrl),
+      loadSheetTab(sheetId, settings.pesertaSheetName, settings.pesertaCsvUrl)
     ]);
 
     const rundownResult = rundownSet.status === "fulfilled" ? rundownSet.value : null;
     const pesertaResult = pesertaSet.status === "fulfilled" ? pesertaSet.value : null;
 
-    if (rundownSet.status === "rejected" && pesertaSet.status === "rejected") {
-      throw rundownSet.reason || pesertaSet.reason;
-    }
+    const finalRundown = rundownResult && rundownResult.length
+      ? rundownResult.map(normalizeRundownRow)
+      : window.RAKER_DEFAULT_DATA.rundown.slice();
+
+    const finalPeserta = pesertaResult && pesertaResult.length
+      ? pesertaResult.map(normalizePesertaRow).filter(Boolean)
+      : window.RAKER_DEFAULT_DATA.peserta.slice();
+
+    const isLive = Boolean(
+      (rundownResult && rundownResult.length > 0) ||
+      (pesertaResult && pesertaResult.length > 0)
+    );
 
     return {
-      mode: "live",
-      sourceLabel: "Google Sheets Live",
+      mode: isLive ? "live" : "demo",
+      sourceLabel: isLive ? "Google Sheets Live" : "Default Template (Demo)",
       activeSettings: settings,
-      rundown: rundownResult && rundownResult.length ? rundownResult.map(normalizeRundownRow) : window.RAKER_DEFAULT_DATA.rundown.slice(),
-      peserta: pesertaResult && pesertaResult.length ? pesertaResult.map(normalizePesertaRow) : window.RAKER_DEFAULT_DATA.peserta.slice(),
+      rundown: finalRundown,
+      peserta: finalPeserta,
       syncedAt: new Date()
     };
   }
