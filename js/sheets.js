@@ -8,6 +8,8 @@
  */
 window.RakerSheets = (function () {
   const STORAGE_KEY = "raker2027_sheet_settings_v1";
+  const DEFAULT_SHEET_URL =
+    "https://docs.google.com/spreadsheets/d/1VHLK_qjf_-vnhYYwoq3Qavz6yHXZoIyNeIjdbUtZODs/edit?usp=sharing";
 
   function getSettings() {
     const base = window.RAKER_CONFIG || {};
@@ -20,7 +22,7 @@ window.RakerSheets = (function () {
     }
 
     return {
-      spreadsheetUrl: saved.spreadsheetUrl || base.spreadsheetUrl || "",
+      spreadsheetUrl: saved.spreadsheetUrl || base.spreadsheetUrl || DEFAULT_SHEET_URL,
       rundownSheetName: saved.rundownSheetName || base.rundownSheetName || "rundown",
       pesertaSheetName: saved.pesertaSheetName || base.pesertaSheetName || "peserta",
       rundownCsvUrl: saved.rundownCsvUrl || base.rundownCsvUrl || "",
@@ -238,6 +240,7 @@ window.RakerSheets = (function () {
     return {
       mode: "live",
       sourceLabel: "Google Sheets Live",
+      activeSettings: settings,
       rundown: rundownResult && rundownResult.length ? rundownResult.map(normalizeRundownRow) : window.RAKER_DEFAULT_DATA.rundown.slice(),
       peserta: pesertaResult && pesertaResult.length ? pesertaResult.map(normalizePesertaRow) : window.RAKER_DEFAULT_DATA.peserta.slice(),
       syncedAt: new Date()

@@ -277,6 +277,11 @@
       const data = await window.RakerSheets.loadAllData();
       window.RakerFieldMap.setData(data.rundown);
       window.RakerParticipants.setData(data.peserta);
+      if (data.activeSettings) {
+        if (dom.inputSheetUrl) dom.inputSheetUrl.value = data.activeSettings.spreadsheetUrl || "";
+        if (dom.inputRundownTab) dom.inputRundownTab.value = data.activeSettings.rundownSheetName || "rundown";
+        if (dom.inputPesertaTab) dom.inputPesertaTab.value = data.activeSettings.pesertaSheetName || "peserta";
+      }
 
       if (dom.statSessions) dom.statSessions.textContent = String(data.rundown.length);
       if (dom.statParticipants) dom.statParticipants.textContent = String(data.peserta.length);
