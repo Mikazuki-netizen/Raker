@@ -218,7 +218,6 @@
 
     // Scroll-spy for sticky navigation links
     setupScrollSpy();
-    setupStopmapTabs();
     setupDressCodeDeck();
     setupStickyScrollNav();
   }
