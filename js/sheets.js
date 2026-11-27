@@ -139,57 +139,8 @@ window.RakerSheets = (function () {
     return window.RakerCsv.parse(text);
   }
 
-  async function fetchServerConfig() {
-    try {
-      const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
-      const timer = controller ? setTimeout(() => controller.abort(), 4000) : null;
-      const res = await fetch("/api/sheet-config?_ts=" + Date.now(), controller ? { signal: controller.signal } : undefined);
-      if (timer) clearTimeout(timer);
-      if (!res.ok) return null;
-      const json = await res.json();
-      if (json && json.ok && json.config && json.persistent) {
-        return json.config;
-      }
-    } catch (_) {
-      // Ignore when running on static local server without /api or on timeout
-    }
-    return null;
-  }
-
-  async function saveServerConfig(next, password) {
-    try {
-      const res = await fetch("/api/sheet-config", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          password: password || "",
-          spreadsheetUrl: next.spreadsheetUrl,
-          rundownSheetName: next.rundownSheetName,
-          pesertaSheetName: next.pesertaSheetName,
-          rundownCsvUrl: next.rundownCsvUrl,
-          pesertaCsvUrl: next.pesertaCsvUrl
-        })
-      });
-      if (!res.ok) return { ok: false, persistent: false };
-      return await res.json();
-    } catch (_) {
-      return { ok: false, persistent: false };
-    }
-  }
-
   async function loadAllData() {
-    let settings = getSettings();
-    const serverConfig = await fetchServerConfig();
-    if (serverConfig && serverConfig.spreadsheetUrl) {
-      settings = {
-        ...settings,
-        spreadsheetUrl: serverConfig.spreadsheetUrl,
-        rundownSheetName: serverConfig.rundownSheetName || settings.rundownSheetName,
-        pesertaSheetName: serverConfig.pesertaSheetName || settings.pesertaSheetName,
-        rundownCsvUrl: serverConfig.rundownCsvUrl ?? settings.rundownCsvUrl,
-        pesertaCsvUrl: serverConfig.pesertaCsvUrl ?? settings.pesertaCsvUrl
-      };
-    }
+    const settings = getSettings();
 
     if (!isConfigured(settings)) {
       return {
@@ -250,7 +201,6 @@ window.RakerSheets = (function () {
   return {
     getSettings,
     saveSettings,
-    saveServerConfig,
     clearSavedSettings,
     isConfigured,
     loadAllData

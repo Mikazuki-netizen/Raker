@@ -195,13 +195,7 @@
           appsScriptUrl: (window.RAKER_CONFIG && window.RAKER_CONFIG.appsScriptUrl) || ""
         };
         window.RakerSheets.saveSettings(nextSettings);
-        const serverRes = await window.RakerSheets.saveServerConfig(nextSettings, unlockedSheetPassword);
         const ok = await syncSpreadsheetData(true);
-        if (serverRes && serverRes.persistent) {
-          showToast("Link spreadsheet disimpan secara global untuk seluruh pengguna.");
-        } else if (ok) {
-          showToast("Tersimpan di browser ini. Untuk sinkron ke semua user, pasang Vercel KV / Upstash Redis di Vercel Storage.");
-        }
         if (ok) closeModal("spreadsheet-modal");
       });
     }
